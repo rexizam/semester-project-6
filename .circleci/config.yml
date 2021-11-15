@@ -2,7 +2,6 @@ version: 2.1
 orbs:
   node: circleci/node@4.7.0
   codecov: codecov/codecov@3.2.0
-  firebase-deploy: azdevs/firebase-deploy@1.0.0
 jobs:
   build-job:
     docker:
@@ -40,23 +39,29 @@ jobs:
       - codecov/upload:
           file: './coverage/clover.xml'
 
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - public
-            - .firebaserc
-            - firebase.json
-
   deploy-job:
     docker:
       - image: node:11.10.1
-
+    working_directory: ~/repo
     steps:
-      - attach_workspace:
-         at: ./
-
-      - firebase-deploy/deploy:
-         token: $FIREBASE_TOKEN
+      - restore_cache:
+          keys:
+            - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: show directory
+          command: pwd
+      - run:
+          name: Install Firebase
+          command: npm install -g firebase-tools
+      - run:
+          name: look in directory
+          command: ls -ltr
+      - run:
+          name: use default firebase project
+          command: firebase use default
+      - run:
+          name: Deploy Master to Firebase
+          command: firebase deploy --only hosting --token ${FIREBASE_TOKEN}
 
 workflows:
   version: 2
