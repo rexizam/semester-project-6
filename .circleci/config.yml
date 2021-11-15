@@ -40,6 +40,13 @@ jobs:
       - codecov/upload:
           file: './coverage/clover.xml'
 
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - public
+            - .firebaserc
+            - firebase.json
+
   deploy-job:
     docker:
       - image: node:11.10.1
