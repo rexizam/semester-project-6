@@ -59,6 +59,7 @@
     "eject": "react-app-rewired eject",
     "test:coverage": "cross-env CI=true npm test -- --env=jsdom --coverage",
     "upload:test-report": "./node_modules/.bin/codecov",
+    "firebase-deploy": "firebase deploy",
     "lint": "eslint src/**/*.js src/**/*.jsx",
     "lint:fix": "eslint src/**/*.js --fix"
   },
