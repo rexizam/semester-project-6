@@ -25,6 +25,7 @@ jobs:
 
       - save_cache:
           paths:
+            - build
             - node_modules
             - package.json
             - firebase.json
