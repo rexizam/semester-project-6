@@ -13,6 +13,7 @@
     "bs-stepper": "1.7.0",
     "chart.js": "2.9.4",
     "classnames": "2.2.6",
+    "cross-env": "^7.0.3",
     "griding": "^0.5.0",
     "moment": "2.29.1",
     "netlify-cli": "^6.14.23",
@@ -59,6 +60,7 @@
     "eject": "react-app-rewired eject",
     "test:coverage": "cross-env CI=true npm test -- --env=jsdom --coverage",
     "upload:test-report": "./node_modules/.bin/codecov",
+    "netlify:deploy": "netlify deploy --dir=./build -p -m \"$(git log -1 --pretty=%B)\"",
     "lint": "eslint src/**/*.js src/**/*.jsx",
     "lint:fix": "eslint src/**/*.js --fix"
   },
