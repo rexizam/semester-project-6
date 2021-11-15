@@ -28,8 +28,6 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-            - firebase.json
-            - .firebaserc
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
@@ -40,4 +38,4 @@ jobs:
       - codecov/upload:
           file: './coverage/clover.xml'
 
-      - run: firebase deploy --only hosting --token ${FIREBASE_TOKEN}
+      - run: firebase logout && firebase deploy --only hosting --token ${FIREBASE_TOKEN}
