@@ -1,10 +1,10 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Reflector, useTexture, useGLTF, Loader } from '@react-three/drei';
-import couch from '../../../assets/3d-models/couch.glb';
-import videoClip from '../../../assets/video/videoplayback.mp4';
-import floorTexture from '../../../assets/textures/SurfaceImperfections003_1K_var1.jpg';
-import floorTextureNormal from '../../../assets/textures/SurfaceImperfections003_1K_Normal.jpg';
+import couch from '../../assets/3d-models/couch.glb';
+import videoClip from '../../assets/video/videoplayback.mp4';
+import floorTexture from '../../assets/textures/SurfaceImperfections003_1K_var1.jpg';
+import floorTextureNormal from '../../assets/textures/SurfaceImperfections003_1K_Normal.jpg';
 import { sRGBEncoding, Vector3 } from 'three';
 
 /**

@@ -1,0 +1,157 @@
+.movie {
+  position: relative;
+  margin: 0 1.25rem 3rem 1.25rem;
+  padding: 1.25rem .65rem .85rem .65rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 270px;
+  min-width: 270px;
+  height: 400px;
+  min-height: 400px;
+  box-shadow: 10px 10px 10px #111;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  background-color: rgba(122, 122, 122, 0.35);
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: rgb(0, 0, 0);
+    background-size: cover;
+  }
+
+  .movie-card-button {
+    background: none;
+    outline: none;
+    cursor: pointer;
+    display: table;
+    border: 0;
+    z-index: 2;
+
+    .loadMore {
+      width: 270px;
+      height: 400px;
+      color: #737373;
+      font-size: 1.5rem;
+      display: table-cell;
+      vertical-align: middle;
+    }
+  }
+
+  .img {
+    width: 100%;
+    max-width: 270px;
+    height: 400px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .movie__title {
+    z-index: 2;
+    color: #ddd;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform .24s ease-in 0s, opacity .3s linear;
+    text-transform: uppercase;
+  }
+
+  .movie__description {
+    z-index: 2;
+    color: #ddd;
+    max-height: 200px;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform .24s ease-in 0.05s, opacity .3s linear;
+  }
+
+  .movie__infos {
+    z-index: 2;
+    align-items: center;
+
+    .info__head {
+      display: block;
+      margin-bottom: 4px;
+      font-size: .8em;
+      text-transform: uppercase;
+    }
+
+    .movie__year {
+      color: #ddd;
+      font-weight: bold;
+      font-size: 1.2em;
+      transform: scale(0);
+      opacity: 0;
+      transition: transform .24s ease-in 0.25s, opacity .3s linear;
+    }
+  }
+
+  .movie__imdb {
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-self: flex-end;
+    padding: 10px 10px;
+
+    .movie__rating {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #EBBA33;
+      border-radius: .5rem;
+      transform: scale(0);
+      opacity: 0;
+      transition: transform .24s ease-in 0.35s, opacity .3s linear;
+
+      .rating {
+        color: #ddd;
+        font-weight: 500;
+        padding: .3rem;
+        min-width: 2.5rem;
+      }
+
+      .imdb {
+        color: #1e1e1e;
+        font-weight: 600;
+        background: #EBBA33;
+        padding: .3rem;
+        border-radius: 0 .45rem .45rem 0;
+      }
+    }
+  }
+
+  &:hover .overlay {
+    opacity: 0.8;
+  }
+}
+
+.movie:hover > * {
+  opacity: 1;
+  transform: scale(1);
+
+  &.movie__infos > * {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &.movie__imdb > * {
+    opacity: 1;
+    transform: scale(1);
+
+    &.movie__rating > * {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

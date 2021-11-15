@@ -13,7 +13,7 @@ import { Slide, toast } from 'react-toastify';
 import Avatar from '../../@core/components/avatar';
 import SpinnerComponent from '../../@core/components/spinner/Fallback-spinner';
 import { ReactComponent as Logo } from '../../assets/images/logo/logo-secondary.svg';
-import IntroScene from '../../@core/components/intro-scene-3d';
+import IntroScene from '../../components/intro-scene-3d';
 
 const Register = () => {
 

@@ -37,6 +37,7 @@ import * as serviceWorker from './serviceWorker';
 
 // ** Realm-Web
 import * as Realm from 'realm-web';
+
 new Realm.App({ id: process.env.REACT_APP_REALM_APP_ID });
 
 // ** Lazy load app
@@ -51,10 +52,14 @@ ReactDOM.render(
       </ThemeContext>
     </Suspense>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+if (window.location.hostname === 'localhost') {
+  serviceWorker.unregister();
+} else {
+  serviceWorker.register();
+}

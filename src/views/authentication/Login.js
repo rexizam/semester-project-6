@@ -12,7 +12,7 @@ import * as Realm from 'realm-web';
 import { getRealmService } from '../../realm-cli';
 import { ReactComponent as Logo } from '../../assets/images/logo/logo-secondary.svg';
 import '@styles/base/pages/page-auth.scss';
-import IntroScene from '../../@core/components/intro-scene-3d';
+import IntroScene from '../../components/intro-scene-3d';
 import {
   Alert,
   Row,

@@ -1,10 +1,10 @@
-import { Cast, TrendingUp, Search } from 'react-feather'
+import { Film, TrendingUp, Search } from 'react-feather'
 
 export default [
   {
     id: 'featured',
     title: 'Featured',
-    icon: <Cast size={20} />,
+    icon: <Film size={20} />,
     navLink: '/featured-movies'
   },
   {
