@@ -25,6 +25,11 @@ jobs:
 
       - run: npm run build
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
       - save_cache:
           paths:
             - node_modules
@@ -38,4 +43,4 @@ jobs:
       - codecov/upload:
           file: './coverage/clover.xml'
 
-      - run: firebase deploy --only hosting --token ${FIREBASE_TOKEN} --project ${FIREBASE_PROJECT_ID}
+      - run: firebase deploy --only hosting --token ${FIREBASE_TOKEN}
