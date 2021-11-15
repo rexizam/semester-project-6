@@ -22,7 +22,7 @@ jobs:
       - run: npm install
 
       - run:
-          name: build
+          name: Build env
           command: |
               touch .env
               echo "REACT_APP_REALM_APP_ID" > .env
