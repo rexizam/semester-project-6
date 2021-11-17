@@ -8,7 +8,7 @@ const PopularMovies = () => {
           <CardTitle>Popular movies view</CardTitle>
         </CardHeader>
         <CardBody>
-          <CardText>Popular movies from TMDB will be fetched and displayed here.</CardText>
+          <CardText>Popular movies from TMDB will be fetched and displayed here</CardText>
         </CardBody>
       </Card>
     </div>
