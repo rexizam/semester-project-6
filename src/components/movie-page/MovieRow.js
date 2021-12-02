@@ -58,6 +58,12 @@ const MovieRow = ({ page, setPage, isLastPage, requestType, searchString }) => {
 
   const MovieCardBlock = handleViewport(MovieCard);
 
+  if (error && requestType === 'search') return (
+    <Cell xs={12}>
+      <div/>
+    </Cell>
+  );
+
   if (error) return (
     <Cell xs={12}>
       <div>Error: {error.name} {error.message}</div>

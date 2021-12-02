@@ -16,7 +16,7 @@ const Movies = ({ requestType }) => {
    * -  searchString is the value, initially it is an empty string, request string (used to search for a particular movie on the TMDb API).
    * -  setSearchString, setter for the value of searchString.
    */
-  const [searchString, setSearchString] = useState('Star Wars');
+  const [searchString, setSearchString] = useState('');
   /**
    * Page state hook:
    * -  page is the value, initially set to 1.
@@ -36,19 +36,18 @@ const Movies = ({ requestType }) => {
    * @returns {boolean} True if the current page is the last visible page, false otherwise.
    */
   const isLastPage = (pagesArray, page) => pagesArray.slice(-1)[0] === page;
-  const isRequestTypeSearch = () => requestType === 'search';
-
-  console.log(searchString);
-  return <>
-    <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
-      {isRequestTypeSearch() && <SearchTab searchString={searchString} setSearchString={setSearchString} />}
-      <Row vertical-gutter style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
-        {
-          pagesArray.map(page => (isRequestTypeSearch() ? (<MovieRow key={page} requestType={requestType} searchString={searchString} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} />) : (<MovieRow key={page} requestType={requestType} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} />)))
-        }
-      </Row>
-    </GridProvider>
-  </>;
+  return (
+    <>
+      {requestType === 'search' && <SearchTab setSearchString={setSearchString} searchString={searchString}/>}
+      <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
+        <Row vertical-gutter style={{marginBottom: '2rem', justifyContent: 'space-around'}}>
+          {pagesArray.map(page => (
+            <MovieRow key={page} requestType={requestType} searchString={searchString} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} />
+          ))}
+        </Row>
+      </GridProvider>
+    </>
+  );
 };
 
 export default Movies;

@@ -3,12 +3,12 @@
 }
 
 .search-tab {
-  background: #2a2e30;
+  background: #161d31;
   text-align: center;
   margin: 1.5rem 2rem;
 
   .MuiInputBase-input {
-    color: #3df9ff;
+    color: #ffffff;
     font-weight: bold;
 
     &:hover {
@@ -18,10 +18,10 @@
   }
 
   .MuiSvgIcon-root {
-    color: #cb2027;
+    color: #ffffff;
   }
 
   &:hover {
-    background: #7fe7ff;
+    background: #7367f0;
   }
 }
