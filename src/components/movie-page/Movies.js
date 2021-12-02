@@ -1,9 +1,11 @@
 import MovieRow from './MovieRow';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Provider as GridProvider, Row } from 'griding';
 import * as GridConfig from '../../configs/gridConfig';
 import SearchTab from '../search/SearchTab';
-import Chips from '../chips/Chips';
+import ClickableChips from '../chips/ClickableChips';
+import {getGenres} from '../../../src/redux/actions/genres/index';
+import {useDispatch, useSelector} from 'react-redux';
 
 /**
  * Container component for the movies to be displayed on a page.
@@ -37,9 +39,24 @@ const Movies = ({ requestType }) => {
    * @returns {boolean} True if the current page is the last visible page, false otherwise.
    */
   const isLastPage = (pagesArray, page) => pagesArray.slice(-1)[0] === page;
+
+  const dispatch = useDispatch();
+  const store = useSelector(state => state.genresReducer.genres);
+
+  useEffect(() => {
+    dispatch(
+        getGenres()
+    )
+  }, [])
+
   return (
     <>
-      {requestType === 'search' && <><SearchTab setSearchString={setSearchString} searchString={searchString}/><br/><Chips/></>}
+      {requestType === 'search' &&
+        <>
+          <SearchTab setSearchString={setSearchString} searchString={searchString}/><br/>
+          <ClickableChips genres={store.genres} />
+        </>
+      }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
         <Row vertical-gutter style={{marginBottom: '2rem', justifyContent: 'space-around'}}>
           {pagesArray.map(page => (
