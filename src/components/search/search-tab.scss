@@ -1,0 +1,28 @@
+.search-tab-title {
+  text-align: center;
+}
+
+.search-tab {
+  background: #2a2e30;
+  text-align: center;
+  margin: 1.5rem 2rem;
+
+  .MuiInputBase-input {
+    color: #3df9ff;
+    font-weight: bold;
+
+    &:hover {
+      color: #ffffff;
+      font-weight: bold;
+    }
+  }
+
+  .MuiSvgIcon-root {
+    color: #cb2027;
+  }
+
+
+   &:hover {
+     background: #7fe7ff;
+   }
+}
