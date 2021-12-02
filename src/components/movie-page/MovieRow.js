@@ -1,10 +1,11 @@
 import { useFetch } from 'react-hooks-async';
 import { useInView } from 'react-intersection-observer';
 import MovieCard from '../movie-card/MovieCard';
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import handleViewport from 'react-in-viewport';
 import { Cell } from 'griding';
 import '../movie-card/movies.scss';
+import { api, base, responseConfigParameter } from '../../network/Constants';
 
 /**
  * Function to build the request URL (for the TMDb API).
@@ -14,16 +15,13 @@ import '../movie-card/movies.scss';
  * @returns {string[]} Array of strings containing the request information.
  */
 const buildURL = (page, requestType, searchString) => {
-  const base = 'https://api.themoviedb.org/3';
-  const api = process.env.REACT_APP_TMDB_KEY;
-  const responseConfigParameter = '&append_to_response=release_dates,external_ids,credits,content_ratings';
   const pageParameter = `&page=${page}`;
 
   switch (requestType) {
     case 'featured':
       return ([`${base}/discover/movie`, `?api_key=${api}`, responseConfigParameter, pageParameter]);
     case 'popular':
-      return ([`${base}/movie/popular`, `?api_key=${api}`, responseConfigParameter, pageParameter]);
+      return ([`${base}/discover/movie?sort_by=popularity.asc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
     case 'search':
       return ([`${base}/search/movie?query=${searchString}`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
   }
@@ -54,15 +52,15 @@ const InfiniteScroll = ({ page, setPage }) => {
 const MovieRow = ({ page, setPage, isLastPage, requestType, searchString }) => {
   const { pending, error, result, abort } = useFetch(buildURL(page, requestType, searchString).join(''));
   const [ref, inView] = useInView();
+  const aborted = useRef(false);
   const totalPages = result?.total_pages;
 
   const MovieCardBlock = handleViewport(MovieCard);
 
-  if (error && requestType === 'search') return (
-    <Cell xs={12}>
-      <div/>
-    </Cell>
-  );
+  if (requestType === 'search' && searchString === '') {
+    abort();
+    aborted.current = true;
+  }
 
   if (error) return (
     <Cell xs={12}>
@@ -70,7 +68,7 @@ const MovieRow = ({ page, setPage, isLastPage, requestType, searchString }) => {
     </Cell>
   );
 
-  if (pending) return (Array(20).fill(0).map((x, i) => (
+  if (pending) return (Array(aborted.current ? 0 : 20).fill(0).map((x, i) => (
     <Cell key={i} xs={6} sm={4} md={3} xg={2}>
       <MovieCard loading />
     </Cell>

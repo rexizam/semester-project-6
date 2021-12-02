@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Provider as GridProvider, Row } from 'griding';
 import * as GridConfig from '../../configs/gridConfig';
 import SearchTab from '../search/SearchTab';
+import Chips from '../chips/Chips';
 
 /**
  * Container component for the movies to be displayed on a page.
@@ -38,7 +39,7 @@ const Movies = ({ requestType }) => {
   const isLastPage = (pagesArray, page) => pagesArray.slice(-1)[0] === page;
   return (
     <>
-      {requestType === 'search' && <SearchTab setSearchString={setSearchString} searchString={searchString}/>}
+      {requestType === 'search' && <><SearchTab setSearchString={setSearchString} searchString={searchString}/><br/><Chips/></>}
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
         <Row vertical-gutter style={{marginBottom: '2rem', justifyContent: 'space-around'}}>
           {pagesArray.map(page => (
