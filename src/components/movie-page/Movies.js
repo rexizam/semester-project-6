@@ -1,11 +1,16 @@
-import MovieRow from './MovieRow';
+// React
 import { useState, useEffect } from 'react';
-import { Provider as GridProvider, Row } from 'griding';
+import { useDispatch, useSelector } from 'react-redux';
+
+// Own
+import MovieRow from './MovieRow';
+import SearchTab from '../search-tab/SearchTab';
+import Chips from '../chips/Chips';
 import * as GridConfig from '../../configs/gridConfig';
-import SearchTab from '../search/SearchTab';
-import ClickableChips from '../chips/ClickableChips';
-import {getGenres} from '../../../src/redux/actions/genres/index';
-import {useDispatch, useSelector} from 'react-redux';
+import { getGenres } from '../../../src/redux/actions/genres/index';
+
+// 3rd Party
+import { Provider as GridProvider, Row } from 'griding';
 
 /**
  * Container component for the movies to be displayed on a page.
@@ -27,6 +32,12 @@ const Movies = ({ requestType }) => {
    */
   const [page, setPage] = useState(1);
   /**
+   * SearchGenres state hook:
+   * -  searchGenres is the value, initially set to an empty array and used in the "MovieRow" component.
+   * -  setSearchGenres is the state setter, used in the "ClickableChips" component.
+   */
+  const [searchGenres, setSearchGenres] = useState([]);
+  /**
    * Array of page indexes, starting at 1 (initial page). Then, as the user scrolls down,
    * it increases continuously.
    * @type {number[]}
@@ -40,9 +51,14 @@ const Movies = ({ requestType }) => {
    */
   const isLastPage = (pagesArray, page) => pagesArray.slice(-1)[0] === page;
 
+  /**
+   * The useDispatch hook is used to trigger the dispatcher and fetch the movie genres.
+   * Extract the genres values from the state store through the genresReducer.
+   * Note: Do not remove the empty dependencies' array, this will cause the useEffect to trigger
+   *       continuously.
+   */
   const dispatch = useDispatch();
   const store = useSelector(state => state.genresReducer.genres);
-
   useEffect(() => {
     dispatch(
         getGenres()
@@ -52,15 +68,15 @@ const Movies = ({ requestType }) => {
   return (
     <>
       {requestType === 'search' &&
-        <>
-          <SearchTab setSearchString={setSearchString} searchString={searchString}/><br/>
-          <ClickableChips genres={store.genres} />
-        </>
+      <>
+        <SearchTab setSearchString={setSearchString} searchString={searchString} /><br/>
+        <Chips genres={store.genres} setSearchGenres={setSearchGenres}/>
+      </>
       }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
-        <Row vertical-gutter style={{marginBottom: '2rem', justifyContent: 'space-around'}}>
+        <Row vertical-gutter style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
           {pagesArray.map(page => (
-            <MovieRow key={page} requestType={requestType} searchString={searchString} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} />
+            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} />
           ))}
         </Row>
       </GridProvider>

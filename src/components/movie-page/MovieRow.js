@@ -14,16 +14,21 @@ import { api, base, responseConfigParameter } from '../../network/Constants';
  * @param searchString In the case of the 'search' request, this is the API query parameter (movie name to search).
  * @returns {string[]} Array of strings containing the request information.
  */
-const buildURL = (page, requestType, searchString) => {
+const buildURL = (page, requestType, searchString, searchGenres) => {
   const pageParameter = `&page=${page}`;
-
+  // const genresSearchString = (searchGenres.map(searchGenre => searchGenre.id)).join(',');
+  // return ([`${base}/discover/movie`, `?api_key=${api}&with_genres=${genresSearchString}`, responseConfigParameter, pageParameter]);
   switch (requestType) {
     case 'featured':
       return ([`${base}/discover/movie`, `?api_key=${api}`, responseConfigParameter, pageParameter]);
     case 'popular':
       return ([`${base}/discover/movie?sort_by=popularity.asc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
     case 'search':
-      return ([`${base}/search/movie?query=${searchString}`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
+      if (searchGenres && searchGenres.length >= 1) {
+        const genresSearchString = (searchGenres.map(searchGenre => searchGenre.id)).join(',');
+        return ([`${base}/discover/movie`, `?api_key=${api}&with_genres=${genresSearchString}`, responseConfigParameter, pageParameter]);
+      }
+      if (searchString !== ' ') return ([`${base}/search/movie?query=${searchString}`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
   }
 };
 
@@ -49,15 +54,15 @@ const InfiniteScroll = ({ page, setPage }) => {
  * @returns {JSX.Element|unknown[]|null}
  * @constructor
  */
-const MovieRow = ({ page, setPage, isLastPage, requestType, searchString }) => {
-  const { pending, error, result, abort } = useFetch(buildURL(page, requestType, searchString).join(''));
+const MovieRow = ({ page, setPage, isLastPage, requestType, searchString, searchGenres }) => {
+  const { pending, error, result, abort } = useFetch(buildURL(page, requestType, searchString, searchGenres).join(''));
   const [ref, inView] = useInView();
   const aborted = useRef(false);
   const totalPages = result?.total_pages;
 
   const MovieCardBlock = handleViewport(MovieCard);
 
-  if (requestType === 'search' && searchString === '') {
+  if (requestType === 'search' && searchString === '' && searchGenres.length === 0) {
     abort();
     aborted.current = true;
   }

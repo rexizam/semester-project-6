@@ -54,8 +54,7 @@
     "sass": "1.26.8",
     "styled-components": "^5.3.3",
     "swiper": "^7.2.0",
-    "three": "0.130.0",
-    "webpack": "^4.44.2"
+    "three": "0.130.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
