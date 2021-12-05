@@ -1,7 +1,7 @@
 import { useFetch } from 'react-hooks-async';
 import { useInView } from 'react-intersection-observer';
 import MovieCard from '../movie-card/MovieCard';
-import { Fragment, useEffect, useRef} from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import handleViewport from 'react-in-viewport';
 import { Cell } from 'griding';
 import '../movie-card/movies.scss';

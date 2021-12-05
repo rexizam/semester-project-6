@@ -24,7 +24,7 @@ const Chips = ({ genres, setSearchGenres }) => {
 
   const handleClick = (element) => {
     const elementIndex = toggledChips.current.findIndex((el) => el.id === element.id);
-
+    element.isClicked = !element.isClicked;
     if (elementIndex !== -1) {
       toggledChips.current.splice(elementIndex, 1);
     } else {
@@ -33,24 +33,13 @@ const Chips = ({ genres, setSearchGenres }) => {
 
     setRerender(!rerender);
     setSearchGenres([...toggledChips.current]);
-    console.log(toggledChips.current);
   };
-
-  // useEffect(() => {
-  //
-  // }, [rerender]);
-
-  console.log('render');
-  console.log(toggledChips.current);
 
   const movieGenres = genres?.map((genre, index) => (
     <Chip
-      className={'chip'}
+      className={`chip ${genre.isClicked ? 'filled' : 'outlined'}`}
       key={index}
       label={genre.name}
-      variant={
-        toggledChips.current.find((element) => element.id === genre.id) ? 'filled' : 'outlined'
-      }
       color={'secondary'}
       onClick={() => handleClick(genre)}
     />
