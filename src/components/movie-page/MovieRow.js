@@ -1,7 +1,7 @@
 import { useFetch } from 'react-hooks-async';
 import { useInView } from 'react-intersection-observer';
 import MovieCard from '../movie-card/MovieCard';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef} from 'react';
 import handleViewport from 'react-in-viewport';
 import { Cell } from 'griding';
 import '../movie-card/movies.scss';
@@ -20,9 +20,9 @@ const buildURL = (page, requestType, searchString, searchGenres) => {
   // return ([`${base}/discover/movie`, `?api_key=${api}&with_genres=${genresSearchString}`, responseConfigParameter, pageParameter]);
   switch (requestType) {
     case 'featured':
-      return ([`${base}/discover/movie`, `?api_key=${api}`, responseConfigParameter, pageParameter]);
+      return ([`${base}/discover/movie?sort_by=vote_average.desc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
     case 'popular':
-      return ([`${base}/discover/movie?sort_by=popularity.asc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
+      return ([`${base}/discover/movie?sort_by=popularity.desc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
     case 'search':
       if (searchGenres && searchGenres.length >= 1) {
         const genresSearchString = (searchGenres.map(searchGenre => searchGenre.id)).join(',');
