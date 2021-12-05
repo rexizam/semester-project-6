@@ -1,4 +1,4 @@
-import { setupTestConfiguration, shallow } from './TestConfiguration';
+import { setupTestConfiguration, shallow } from '../utility/testing/TestConfiguration';
 import App from '../App';
 
 setupTestConfiguration();

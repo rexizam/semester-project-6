@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 // Own
-import { setupTestConfiguration, shallow } from './TestConfiguration';
+import { setupTestConfiguration, shallow } from '../utility/testing/TestConfiguration';
 import SearchMovies from '../views/searchMovies/SearchMovies';
 
 // Test suite configuration

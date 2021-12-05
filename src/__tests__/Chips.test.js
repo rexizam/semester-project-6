@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 
 // Own
 import Chips from '../components/chips/Chips';
-import { mount, setupTestConfiguration, shallow } from './TestConfiguration';
+import { mount, setupTestConfiguration, shallow } from '../utility/testing/TestConfiguration';
 
 // Test suite configuration
 setupTestConfiguration();
