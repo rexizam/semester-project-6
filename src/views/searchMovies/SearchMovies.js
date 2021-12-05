@@ -1,18 +1,6 @@
-import { Card, CardHeader, CardBody, CardTitle, CardText } from 'reactstrap'
+import Movies from '../../components/movie-page/Movies';
+import React from 'react';
 
-const SearchMovies = () => {
-  return (
-    <div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Search movies view</CardTitle>
-        </CardHeader>
-        <CardBody>
-          <CardText>This view will have a search bar and filters on the side</CardText>
-        </CardBody>
-      </Card>
-    </div>
-  )
-}
+const SearchMovies = () => <Movies requestType={'search'}/>;
 
 export default SearchMovies
