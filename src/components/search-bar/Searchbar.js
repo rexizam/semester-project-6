@@ -1,13 +1,9 @@
 import React from 'react';
 import { Search, X } from 'react-feather';
-
-import Input from 'reactstrap/es/Input';
-import InputGroup from 'reactstrap/es/InputGroup';
-import InputGroupText from 'reactstrap/es/InputGroupText';
-import InputGroupAddon from 'reactstrap/es/InputGroupAddon';
+import { Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 
 /**
- * Search tab component, has an input field which receives some text from the user and sets its value in
+ * Search bar component, has an input field which receives some text from the user and sets its value in
  * the searchString through the setSearchString state function.
  * The initial value is "Star Wars", set in the parent component, "Movies.js".
  * @param searchString Component property, the initial value is "Star Wars", upon changed (in the UI),

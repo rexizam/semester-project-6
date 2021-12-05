@@ -2,6 +2,7 @@ import * as React from 'react';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useState, useRef } from 'react';
+import PropTypes, { string } from 'prop-types';
 
 /**
  * Clickable Chips component. Used to keep track of which movie genres are selected by the user.
@@ -33,18 +34,24 @@ const Chips = ({ genres, setSearchGenres }) => {
     setSearchGenres([...toggledChips.current]);
   };
 
-  const movieGenres = genres?.map((element, index) => (
+  const movieGenres = genres?.map((genre, index) => (
     <Chip
+      id={`chip-${index}`}
       key={index}
-      label={element.name}
+      label={genre.name}
       variant={
-        toggledChips.current.find((el) => el.id === element.id) ? 'filled' : 'outlined'
+        toggledChips.current.find((el) => el.id === genre.id) ? 'filled' : 'outlined'
       }
       color={'secondary'}
       style={{ margin: 5 }}
-      onClick={() => handleClick(element)}
+      onClick={() => handleClick(genre)}
     />
   ));
+
+  Chips.propTypes = {
+    genres: PropTypes.arrayOf(PropTypes.string),
+    setSearchGenres: PropTypes.func,
+  };
 
   return (
     <Stack direction='row' spacing={1} flexWrap={'wrap'} justifyContent={'center'}>
