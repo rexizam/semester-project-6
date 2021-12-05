@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // Own
 import MovieRow from './MovieRow';
-import SearchTab from '../search-tab/SearchTab';
 import Chips from '../chips/Chips';
+import Searchbar from '../search-bar/Searchbar';
 import * as GridConfig from '../../configs/gridConfig';
 import { getGenres } from '../../../src/redux/actions/genres/index';
 
@@ -61,16 +61,16 @@ const Movies = ({ requestType }) => {
   const store = useSelector(state => state.genresReducer.genres);
   useEffect(() => {
     dispatch(
-        getGenres()
-    )
-  }, [])
+      getGenres(),
+    );
+  }, []);
 
   return (
     <>
       {requestType === 'search' &&
       <>
-        <SearchTab setSearchString={setSearchString} searchString={searchString} /><br/>
-        <Chips genres={store.genres} setSearchGenres={setSearchGenres}/>
+        <Searchbar setSearchString={setSearchString} searchString={searchString} /><br />
+        <div style={{ marginBottom: 30 }}><Chips genres={store.genres} setSearchGenres={setSearchGenres} /></div>
       </>
       }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>

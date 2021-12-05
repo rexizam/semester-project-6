@@ -46,11 +46,12 @@ const InfiniteScroll = ({ page, setPage }) => {
 
 /**
  * Movie row component, used for creating rows that contain movies for the Movies component.
- * @param page page number for the movies (determined by the number of the movies).
- * @param setPage state hook, used to set page number on the child component (MovieCardBlock)
- * @param isLastPage boolean flag, used to determine if the current page is the last page
- * @param requestType
- * @param searchString
+ * @param page Page number for the movies (determined by the number of the movies).
+ * @param setPage State hook, used to set page number on the child component (MovieCardBlock)
+ * @param isLastPage Boolean flag, used to determine if the current page is the last page
+ * @param requestType The type of request that the component scopes to, one of ['featured', 'popular', 'search']
+ * @param searchString In the case of the requestType being 'search', the movie name (string) to search for.
+ * @param searchGenres In the case of the requestType being 'search', the movie genres (array of objects) to search for.
  * @returns {JSX.Element|unknown[]|null}
  * @constructor
  */

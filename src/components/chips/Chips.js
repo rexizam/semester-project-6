@@ -2,7 +2,6 @@ import * as React from 'react';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useState, useRef } from 'react';
-import './chips.scss';
 
 /**
  * Clickable Chips component. Used to keep track of which movie genres are selected by the user.
@@ -24,7 +23,6 @@ const Chips = ({ genres, setSearchGenres }) => {
 
   const handleClick = (element) => {
     const elementIndex = toggledChips.current.findIndex((el) => el.id === element.id);
-    element.isClicked = !element.isClicked;
     if (elementIndex !== -1) {
       toggledChips.current.splice(elementIndex, 1);
     } else {
@@ -35,26 +33,23 @@ const Chips = ({ genres, setSearchGenres }) => {
     setSearchGenres([...toggledChips.current]);
   };
 
-  const movieGenres = genres?.map((genre, index) => (
+  const movieGenres = genres?.map((element, index) => (
     <Chip
-      className={`chip ${genre.isClicked ? 'filled' : 'outlined'}`}
       key={index}
-      label={genre.name}
+      label={element.name}
+      variant={
+        toggledChips.current.find((el) => el.id === element.id) ? 'filled' : 'outlined'
+      }
       color={'secondary'}
-      onClick={() => handleClick(genre)}
+      style={{ margin: 5 }}
+      onClick={() => handleClick(element)}
     />
   ));
 
   return (
-    <>
-      <div className={'header'}>Available Categories:</div>
-      <Stack direction='row' spacing={1} className={'stack-row'}>
-        {movieGenres?.slice(0, 6)}
-      </Stack>
-      <Stack direction='row' spacing={1} className={'stack-row'}>
-        {movieGenres?.slice(6, 12)}
-      </Stack>
-    </>
+    <Stack direction='row' spacing={1} flexWrap={'wrap'} justifyContent={'center'}>
+      {movieGenres}
+    </Stack>
   );
 };
 
