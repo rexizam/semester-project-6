@@ -10,7 +10,7 @@ describe('PopularMovies', () => {
   let wrapper;
   it('should be rendered.', async () => {
     // Arrange & Act
-    wrapper = shallow(<PopularMovies/>);
+    wrapper = shallow(<PopularMovies />);
     // Assert
     expect(wrapper).toBeDefined();
     expect(wrapper.props().requestType).toBe('popular');

@@ -5,7 +5,7 @@ import FeaturedMovies from '../views/featuredMovies/FeaturedMovies';
 // Test suite configuration
 setupTestConfiguration();
 
-describe('SearchMovies', () => {
+describe('FeaturedMovies', () => {
   // Suite setup
   let wrapper;
   it('should be rendered.', async () => {
