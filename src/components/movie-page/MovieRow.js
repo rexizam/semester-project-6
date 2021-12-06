@@ -1,11 +1,12 @@
 import { useFetch } from 'react-hooks-async';
 import { useInView } from 'react-intersection-observer';
 import MovieCard from '../movie-card/MovieCard';
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import handleViewport from 'react-in-viewport';
 import { Cell } from 'griding';
 import '../movie-card/movies.scss';
 import { api, base, responseConfigParameter } from '../../network/Constants';
+import { getRealmService } from '../../realm-cli';
 
 /**
  * Function to build the request URL (for the TMDb API).
@@ -55,14 +56,13 @@ const InfiniteScroll = ({ page, setPage }) => {
  * @returns {JSX.Element|unknown[]|null}
  * @constructor
  */
-const MovieRow = ({ page, setPage, isLastPage, requestType, searchString, searchGenres }) => {
+const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLastPage }) => {
   const { pending, error, result, abort } = useFetch(buildURL(page, requestType, searchString, searchGenres).join(''));
   const [ref, inView] = useInView();
   const aborted = useRef(false);
   const totalPages = result?.total_pages;
 
   const MovieCardBlock = handleViewport(MovieCard);
-
   if (requestType === 'search' && searchString === '' && searchGenres.length === 0) {
     abort();
     aborted.current = true;

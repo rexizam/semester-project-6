@@ -2,10 +2,10 @@ import MovieInfo from './MovieInfo';
 import Rating from './Rating';
 import ProgressiveImage from 'react-progressive-graceful-image';
 import Heart from './Heart';
-import { ArrowDown } from 'react-feather'
+import { ArrowDown } from 'react-feather';
+import { getRealmService } from '../../realm-cli';
 
 const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
-
   const { inViewport, forwardedRef } = props;
   const title = props?.title || props?.name;
   const description = props?.overview || props?.biography;
@@ -42,13 +42,15 @@ const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
         </ProgressiveImage>
       )}
 
-      {loadMore && inViewport &&  (
+      {loadMore && inViewport && (
         <button className={'movie-card-button'} onClick={() => handleClick()}>
-          <div className={'loadMore'}><div>Load more</div><ArrowDown size={20} color={'#737373'}/></div>
+          <div className={'loadMore'}>
+            <div>Load more</div>
+            <ArrowDown size={20} color={'#737373'} /></div>
         </button>
       )}
 
-      {!loadMore && inViewport &&  (
+      {!loadMore && inViewport && (
         <>
           {title && (<h2 className='movie__title'>{truncate(title, 60)}</h2>)}
           {description && (<span className='movie__description'>{truncate(description, 160)}</span>)}
@@ -58,7 +60,7 @@ const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
 
           <div className='movie__imdb'>
             <Rating rating={score} />
-            <Heart />
+            <Heart movieId={props.id} />
           </div>
         </>
       )}

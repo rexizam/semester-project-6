@@ -50,7 +50,6 @@ const Movies = ({ requestType }) => {
    * @returns {boolean} True if the current page is the last visible page, false otherwise.
    */
   const isLastPage = (pagesArray, page) => pagesArray.slice(-1)[0] === page;
-
   /**
    * The useDispatch hook is used to trigger the dispatcher and fetch the movie genres.
    * Extract the genres values from the state store through the genresReducer.
@@ -60,11 +59,8 @@ const Movies = ({ requestType }) => {
   const dispatch = useDispatch();
   const store = useSelector(state => state.genresReducer.genres);
   useEffect(() => {
-    dispatch(
-      getGenres(),
-    );
+    dispatch(getGenres());
   }, []);
-
   return (
     <>
       {requestType === 'search' &&
