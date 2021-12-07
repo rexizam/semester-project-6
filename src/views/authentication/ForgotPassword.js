@@ -1,10 +1,15 @@
 import { useSkin } from '../../utility/hooks/useSkin';
 import { ChevronLeft } from 'react-feather';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, CardTitle, CardText, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Row, Col, CardTitle, CardText, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import '@styles/base/pages/page-auth.scss';
 import { getRealmService } from '../../realm-cli';
 import { ReactComponent as Logo } from '../../assets/images/logo/logo-secondary.svg';
+import classnames from 'classnames';
+import { Fragment, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { isObjEmpty } from '../../utility/Utils';
+import SpinnerComponent from '../../@core/components/spinner/Fallback-spinner';
 
 const ForgotPassword = () => {
 
@@ -12,13 +17,33 @@ const ForgotPassword = () => {
   const realmService = getRealmService();
 
   const [skin, setSkin] = useSkin();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState();
+  const [infoMessage, setInfoMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { register, errors, handleSubmit } = useForm({ reValidateMode: 'onBlur' });
 
   const illustration = skin === 'dark' ? 'forgot-password-v2-dark.svg' : 'forgot-password-v2.svg',
     source = require(`@src/assets/images/pages/${illustration}`).default;
 
+  const handlePasswordReset = async () => {
+    setLoading(true);
+    if (isObjEmpty(errors)) {
+      try {
+        await realmService.emailPasswordAuth.sendResetPasswordEmail({email});
+        setInfoMessage('We have sent a password reset link to the specified email. You may now close the page.')
+        setLoading(false);
+      } catch (error) {
+        setError(error.error);
+        setLoading(false);
+      }
+    }
+  }
+
   if (!realmService.currentUser) {
     return (
       <div className='auth-wrapper auth-v2'>
+        {loading && (<SpinnerComponent/>)}
         <Row className='auth-inner m-0'>
           <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
             <Logo style={{width: 40.95, height: 28}}/>
@@ -37,14 +62,45 @@ const ForgotPassword = () => {
               <CardText className='mb-2'>
                 Enter your email and we'll send you instructions to reset your password
               </CardText>
-              <Form className='auth-forgot-password-form mt-2' onSubmit={e => e.preventDefault()}>
+              <Form className='auth-forgot-password-form mt-2' onSubmit={handleSubmit(handlePasswordReset)}>
                 <FormGroup>
                   <Label className='form-label' for='login-email'>
                     Email
                   </Label>
-                  <Input type='email' id='login-email' placeholder='john@example.com' autoFocus />
+                  <Input
+                    autoFocus
+                    type='email'
+                    value={email}
+                    id='login-email'
+                    name='login-email'
+                    onChange={e => setEmail(e.target.value)}
+                    className={classnames({'is-invalid': errors['login-email']})}
+                    innerRef={register({required: true, validate: value => value !== ''})}
+                  />
                 </FormGroup>
-                <Button.Ripple color='primary' block>
+                {error ? (
+                  <Alert color='danger'>
+                    <div className='alert-body font-small-2 text-center'>
+                      <p>
+                        <small className='mr-50'>
+                          <span className='font-weight-bold'>{error}</span>
+                        </small>
+                      </p>
+                    </div>
+                  </Alert>
+                ) : null}
+                {infoMessage ? (
+                  <Alert color='success'>
+                    <div className='alert-body font-small-2 text-center'>
+                      <p>
+                        <small className='mr-50'>
+                          <span className='font-weight-bold'>{infoMessage}</span>
+                        </small>
+                      </p>
+                    </div>
+                  </Alert>
+                ) : null}
+                <Button.Ripple type='submit' color='primary' block>
                   Send reset link
                 </Button.Ripple>
               </Form>
