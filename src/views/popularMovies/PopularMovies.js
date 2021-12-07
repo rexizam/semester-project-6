@@ -1,18 +1,5 @@
-import { Card, CardHeader, CardBody, CardTitle, CardText } from 'reactstrap'
+import Movies from '../../components/movie-page/Movies';
 
-const PopularMovies = () => {
-  return (
-    <div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Popular movies view</CardTitle>
-        </CardHeader>
-        <CardBody>
-          <CardText>Popular movies from TMDB will be fetched and displayed here</CardText>
-        </CardBody>
-      </Card>
-    </div>
-  )
-}
+const PopularMovies = () => <Movies requestType={'popular'}/>;
 
 export default PopularMovies
