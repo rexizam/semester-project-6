@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Own
@@ -11,6 +11,8 @@ import { getGenres } from '../../../src/redux/actions/genres/index';
 
 // 3rd Party
 import { Provider as GridProvider, Row } from 'griding';
+import { getRealmService } from '../../realm-cli';
+import { getFavouriteMovies } from '../../redux/actions/favouriteMovies';
 
 /**
  * Container component for the movies to be displayed on a page.
@@ -57,22 +59,26 @@ const Movies = ({ requestType }) => {
    *       continuously.
    */
   const dispatch = useDispatch();
-  const store = useSelector(state => state.genresReducer.genres);
+  const genresStore = useSelector(state => state.genresReducer.genres);
+  const favouritesStore = useSelector(state => state.favouriteMoviesReducer.favouriteMovies);
+
   useEffect(() => {
     dispatch(getGenres());
+    dispatch(getFavouriteMovies());
   }, []);
+  console.log(favouritesStore)
   return (
     <>
       {requestType === 'search' &&
       <>
         <Searchbar setSearchString={setSearchString} searchString={searchString} /><br />
-        <div style={{ marginBottom: 30 }}><Chips genres={store.genres} setSearchGenres={setSearchGenres} /></div>
+        <div style={{ marginBottom: 30 }}><Chips genres={genresStore.genres} setSearchGenres={setSearchGenres} /></div>
       </>
       }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
         <Row vertical-gutter style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
           {pagesArray.map(page => (
-            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} />
+            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} favourites={favouritesStore} />
           ))}
         </Row>
       </GridProvider>

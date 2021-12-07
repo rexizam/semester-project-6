@@ -56,13 +56,18 @@ const InfiniteScroll = ({ page, setPage }) => {
  * @returns {JSX.Element|unknown[]|null}
  * @constructor
  */
-const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLastPage }) => {
+const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLastPage, favourites }) => {
   const { pending, error, result, abort } = useFetch(buildURL(page, requestType, searchString, searchGenres).join(''));
   const [ref, inView] = useInView();
   const aborted = useRef(false);
   const totalPages = result?.total_pages;
-
+  console.log(favourites)
   const MovieCardBlock = handleViewport(MovieCard);
+
+  const checkIsFavourite = (id) => {
+    return favourites.includes(id);
+  }
+
   if (requestType === 'search' && searchString === '' && searchGenres.length === 0) {
     abort();
     aborted.current = true;
@@ -92,7 +97,7 @@ const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLa
     <Fragment>
       {result?.results?.map(entry => (
         <Cell key={entry.id} xs={6} sm={4} md={3} xg={2}>
-          <MovieCardBlock {...entry} />
+          <MovieCardBlock {...entry} isFavourite={checkIsFavourite(entry.id)} favourites={favourites}/>
         </Cell>
       ))}
       {isLastPage && totalPages && totalPages > page && (

@@ -72,7 +72,8 @@ const Register = () => {
         await collection.insertOne(
           {
             userID: realmService.currentUser.id,
-            userName: username
+            userName: username,
+            favourites: []
           }
         )
         //const favourites = ['1213', '1341', '3214'];

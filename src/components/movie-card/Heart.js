@@ -3,12 +3,13 @@ import { getRealmService } from '../../realm-cli';
 
 const Heart = ({
                  size = 24,
-                 filled = false,
+                 filled,
+                 setFilled,
                  strokeWidth = '2',
                  movieId,
+                 favourites,
                }) => {
 
-  let favouriteMovies = [];
   const [color, setColor] = useState('#ddd');
 
   const realmService = getRealmService();
@@ -23,30 +24,44 @@ const Heart = ({
     setColor('#ddd');
   };
 
-  const updateCollection = async (isUpdate) => {
-    await collection.findOneAndReplace(
-      {
-        userID: realmService.currentUser.id,
-      }, {
-        userID: realmService.currentUser.id,
-        userName: realmService.currentUser.customData.userName,
-        favourites: isUpdate ? favouriteMovies : [movieId],
-      },
-    );
+  const refreshUserCustomData = async () => {
+    await realmService.currentUser.refreshCustomData();
+    console.log(realmService.currentUser.customData.favourites);
+
   };
 
-  const createOrUpdateFavouriteMoviesList = async () => {
-    favouriteMovies = await (await collection.find({ userID: realmService.currentUser.id }))[0].favourites;
-    if (!favouriteMovies) {
-      await updateCollection(false);
-    } else if (!favouriteMovies.includes(movieId)) {
-      favouriteMovies.push(movieId);
-      await updateCollection(true);
+  const updateCollection = async () => {
+    const updated = favourites;
+    if (!updated.includes(movieId)) {
+      updated.push(movieId);
+      await collection.findOneAndReplace(
+        {
+          userID: realmService.currentUser.id,
+        }, {
+          userID: realmService.currentUser.id,
+          userName: realmService.currentUser.customData.userName,
+          favourites: updated,
+        },
+      );
+      refreshUserCustomData().then(setFilled(!filled));
+    } else if (updated.includes(movieId)) {
+      const filteredFavourites = updated.filter(item => item !== movieId);
+      console.log(filteredFavourites);
+      await collection.findOneAndReplace(
+        {
+          userID: realmService.currentUser.id,
+        }, {
+          userID: realmService.currentUser.id,
+          userName: realmService.currentUser.customData.userName,
+          favourites: filteredFavourites,
+        },
+      );
+      refreshUserCustomData().then(setFilled(!filled));
     }
   };
 
   const handleClick = () => {
-    createOrUpdateFavouriteMoviesList();
+    updateCollection();
   };
 
   return (
