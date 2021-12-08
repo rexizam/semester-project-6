@@ -3,7 +3,6 @@ import * as React from 'react';
 
 // Own
 import { setupTestConfiguration, shallow } from '../utility/testing/TestConfiguration';
-import FeaturedMovies from '../views/featuredMovies/FeaturedMovies';
 
 // Test suite configuration
 setupTestConfiguration();
