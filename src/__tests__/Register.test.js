@@ -8,8 +8,14 @@ import { setupTestConfiguration, shallow } from '../utility/testing/TestConfigur
 setupTestConfiguration();
 
 describe('Register', () => {
+  // Suite setup
+  let wrapper;
+
   it('Register: renders correctly', async () => {
+    // Arrange & Act
     const Register = (await import('../views/authentication/Register')).default;
-    shallow(<Register />);
+    wrapper = shallow(<Register />);
+    // Assert
+    expect(wrapper).toBeDefined();
   });
 })

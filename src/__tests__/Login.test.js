@@ -8,8 +8,14 @@ import { setupTestConfiguration, shallow } from '../utility/testing/TestConfigur
 setupTestConfiguration();
 
 describe('Login', () => {
+  // Suite setup
+  let wrapper;
+
   it('Login: renders correctly', async () => {
+    // Arrange & Act
     const Login = (await import('../views/authentication/Login')).default;
-    shallow(<Login />);
+    wrapper = shallow(<Login />);
+    // Assert
+    expect(wrapper).toBeDefined();
   });
 })
