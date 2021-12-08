@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { getRealmService, getUserProfilesCollection } from '../../realm-cli';
 
-const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId, favourites }) => {
+const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId }) => {
   const [color, setColor] = useState('#ddd');
-
   const realmService = getRealmService();
 
   const handleMouseEnter = () => {
@@ -14,42 +13,25 @@ const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId, favou
     setColor('#ddd');
   };
 
-  const refreshUserCustomData = async () => {
-    await realmService.currentUser.refreshCustomData();
-  };
-
-  const updateCollection = async () => {
-    const updated = favourites;
-    if (!updated.includes(movieId)) {
-      updated.push(movieId);
-      await getUserProfilesCollection().findOneAndReplace(
-        {
-          userID: realmService.currentUser.id,
-        }, {
-          userID: realmService.currentUser.id,
-          userName: realmService.currentUser.customData.userName,
-          favourites: updated,
-        },
-      );
-      refreshUserCustomData().then(setFilled(!filled));
-    } else if (updated.includes(movieId)) {
-      const filteredFavourites = updated.filter(item => item !== movieId);
-      console.log(filteredFavourites);
-      await getUserProfilesCollection.findOneAndReplace(
-        {
-          userID: realmService.currentUser.id,
-        }, {
-          userID: realmService.currentUser.id,
-          userName: realmService.currentUser.customData.userName,
-          favourites: filteredFavourites,
-        },
-      );
-      refreshUserCustomData().then(setFilled(!filled));
+  const updateFavouriteMovies = async () => {
+    const favourites = await realmService.currentUser.functions.callFunction('getFavouriteMovies');
+    console.log(favourites);
+    if (favourites === null) {
+      await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', [movieId]).then(setFilled(!filled));
+    } else {
+      const updated = favourites;
+      if (!updated.includes(movieId)) {
+        updated.push(movieId);
+        await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', updated).then(setFilled(!filled));
+      } else if (updated.includes(movieId)) {
+        const filteredFavourites = updated.filter(item => item !== movieId);
+        await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', filteredFavourites).then(setFilled(!filled));
+      }
     }
   };
 
   const handleClick = () => {
-    updateCollection();
+    updateFavouriteMovies();
   };
 
   return (

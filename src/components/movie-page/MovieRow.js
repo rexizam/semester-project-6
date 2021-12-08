@@ -17,7 +17,6 @@ import { api, base, responseConfigParameter } from '../../network/Constants';
 const buildURL = (page, requestType, searchString, searchGenres) => {
   const pageParameter = `&page=${page}`;
   switch (requestType) {
-    case 'favourites':
     case 'featured': {
       return ([`${base}/discover/movie?sort_by=vote_average.desc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
     }
@@ -65,8 +64,10 @@ const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLa
   const MovieCardBlock = handleViewport(MovieCard);
 
   const checkIsFavourite = (id) => {
-    return favourites?.includes(id);
-  }
+    if (favourites && favourites.length >= 1) {
+      return favourites.includes(id);
+    }
+  };
 
   if (requestType === 'search' && searchString === '' && searchGenres.length === 0) {
     abort();
@@ -93,18 +94,14 @@ const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLa
 
   if (!result?.results?.length) return null;
 
-  const getFavourites = () => {
-    return result?.results.filter(result => favourites.includes(result.id));
-  }
-
   return (
     <Fragment>
-      {(requestType === 'favourites' ? getFavourites() : result?.results).map(entry => (
+      {result?.results?.map(entry => (
         <Cell key={entry.id} xs={6} sm={4} md={3} xg={2}>
           <MovieCardBlock {...entry} isFavourite={checkIsFavourite(entry.id)} favourites={favourites} />
         </Cell>
       ))}
-      {isLastPage && totalPages && totalPages > page && requestType !== 'favourites' && (
+      {isLastPage && totalPages && totalPages > page && (
         <Cell xs={6} sm={4} md={3} xg={2}>
           <MovieCardBlock page={page} setPage={setPage} loadMore />
           {page > 1 && <div ref={ref}>{inView && <InfiniteScroll page={page} setPage={setPage} />}</div>}

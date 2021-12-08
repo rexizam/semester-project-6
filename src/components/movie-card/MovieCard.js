@@ -5,7 +5,7 @@ import Heart from './Heart';
 import { ArrowDown } from 'react-feather';
 import { useState } from 'react';
 
-const MovieCard = ({ loading, loadMore, page, setPage, isFavourite, favourites, ...props }) => {
+const MovieCard = ({ loading, loadMore, page, setPage, isFavourite, ...props }) => {
   const [filled, setFilled] = useState(isFavourite);
   const { inViewport, forwardedRef } = props;
   const title = props?.title || props?.name;
@@ -61,7 +61,7 @@ const MovieCard = ({ loading, loadMore, page, setPage, isFavourite, favourites, 
 
           <div className='movie__imdb'>
             <Rating rating={score} />
-            <Heart movieId={props.id} filled={filled} setFilled={setFilled} favourites={favourites}/>
+            <Heart movieId={props.id} filled={filled} setFilled={setFilled}/>
           </div>
         </>
       )}
