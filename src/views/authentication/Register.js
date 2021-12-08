@@ -14,15 +14,16 @@ import Avatar from '../../@core/components/avatar';
 import SpinnerComponent from '../../@core/components/spinner/Fallback-spinner';
 import { ReactComponent as Logo } from '../../assets/images/logo/logo-secondary.svg';
 import IntroScene from '../../components/intro-scene-3d';
+import axios from 'axios';
 
 const Register = () => {
 
   const history = useHistory();
   const realmService = getRealmService();
-  const { register, errors, handleSubmit } = useForm();
+  const { register, errors, handleSubmit } = useForm({ reValidateMode: 'onBlur' });
 
   const [email, setEmail] = useState('');
-  const [error, setError] = useState();
+  const [error, setError] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [terms, setTerms] = useState(false);
@@ -61,43 +62,65 @@ const Register = () => {
   const onSubmit = async () => {
     if (isObjEmpty(errors)) {
       setLoading(true);
-      try {
-        // Create user
-        await realmService.emailPasswordAuth.registerUser(email, password);
-        // Authenticate user
-        await realmService.logIn(Realm.Credentials.emailPassword(email, password));
-        // Save profile information
-        const mongodb = realmService.currentUser.mongoClient(process.env.REACT_APP_MONGO_CLIENT);
-        const collection = mongodb.db(process.env.REACT_APP_MONGODB_DB_NAME).collection('user_profiles');
-        await collection.insertOne(
-          {
-            userID: realmService.currentUser.id,
-            userName: username
+
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      };
+
+      axios.post('https://data.mongodb-api.com/app/sep6-xsgre/endpoint/validateUserName', {username}, {headers}).then(async response => {
+        if (response.data === 'Username available.') {
+          try {
+            // Create user
+            await realmService.emailPasswordAuth.registerUser(email, password);
+            // Authenticate user
+            await realmService.logIn(Realm.Credentials.emailPassword(email, password));
+            // Save profile information
+            const mongodb = realmService.currentUser.mongoClient(process.env.REACT_APP_MONGO_CLIENT);
+            const collection = mongodb.db(process.env.REACT_APP_MONGODB_DB_NAME).collection('user_profiles');
+            await collection.insertOne(
+              {
+                userID: realmService.currentUser.id,
+                userName: username
+              }
+            )
+            //const favourites = ['1213', '1341', '3214'];
+            //await collection.updateOne({userID: realmService.currentUser.id}, { $set: { favouriteMovies: favourites } })
+            refreshUserCustomData().then(res => {
+              setLoading(false);
+              history.push('/');
+              toast.success(
+                <ToastContent name={res} />,
+                { transition: Slide, hideProgressBar: true, autoClose: 3000 }
+              );
+            })
+          } catch (err) {
+            setLoading(false);
+            if (err.statusCode === 409) {
+              setError('Email address already registered.');
+            } else {
+              setError(err.error);
+            }
           }
-        )
-        //const favourites = ['1213', '1341', '3214'];
-        //await collection.updateOne({userID: realmService.currentUser.id}, { $set: { favouriteMovies: favourites } })
-        refreshUserCustomData().then(res => {
+        } else if (response.data === 'Username taken.') {
+          setError('Username taken.');
           setLoading(false);
-          history.push('/');
-          toast.success(
-            <ToastContent name={res} />,
-            { transition: Slide, hideProgressBar: true, autoClose: 3000 }
-          );
-        })
-      } catch (err) {
-        setLoading(false);
-        setError(err.error);
-      }
+        }
+      })
     }
   };
 
   const handleUsernameChange = e => {
-    setUsername(e.target.value)
+    if (e.target.value.length < 5) {
+      setError('Username must contain at least 5 characters.');
+    } else if (e.target.value.length >= 5) {
+      setError(null);
+    }
+    setUsername(e.target.value);
   }
 
   const handleEmailChange = e => {
-    setEmail(e.target.value)
+    setEmail(e.target.value);
   }
 
   return (
