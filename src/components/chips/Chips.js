@@ -12,7 +12,7 @@ import PropTypes, { string } from 'prop-types';
  * @returns {JSX.Element}
  * @constructor
  */
-const Chips = ({ genres, setSearchGenres }) => {
+const Chips = ({ genres, setSearchGenres, setSearchString, searchString }) => {
   /**
    * Array used to keep track of which chips are toggled (clicked).
    * Uses the useRef hook for single value consistency across re-renders of the
@@ -22,6 +22,11 @@ const Chips = ({ genres, setSearchGenres }) => {
   const toggledChips = useRef([]);
   const [rerender, setRerender] = useState(false);
 
+  // Reset chips.
+  if (searchString !== '') {
+    toggledChips.current = [];
+  }
+
   const handleClick = (element) => {
     const elementIndex = toggledChips.current.findIndex((el) => el.id === element.id);
     if (elementIndex !== -1) {
@@ -29,8 +34,9 @@ const Chips = ({ genres, setSearchGenres }) => {
     } else {
       toggledChips.current.push(element);
     }
-
     setRerender(!rerender);
+    // Reset Search Bar text.
+    setSearchString('');
     setSearchGenres([...toggledChips.current]);
   };
 
@@ -49,7 +55,7 @@ const Chips = ({ genres, setSearchGenres }) => {
   ));
 
   Chips.propTypes = {
-    genres: PropTypes.arrayOf(PropTypes.string),
+    genres: PropTypes.arrayOf(PropTypes.object),
     setSearchGenres: PropTypes.func,
   };
 

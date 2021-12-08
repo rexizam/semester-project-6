@@ -1,13 +1,11 @@
 import { getRealmService } from '../../../realm-cli';
 
-// Get genres
-export const getFavouriteMovies = () => {
+export const getFavouriteMovieIds = () => {
   return dispatch => {
     const realmService = getRealmService();
     realmService.currentUser.functions.callFunction('getFavouriteMovies').then(res => {
-        console.log(res);
         dispatch({
-          type: 'GET_FAVOURITE_MOVIES',
+          type: 'GET_FAVOURITE_MOVIE_IDS',
           favouriteMovies: res,
         });
       },

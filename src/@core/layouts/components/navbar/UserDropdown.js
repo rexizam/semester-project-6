@@ -13,10 +13,11 @@ import { useDispatch } from 'react-redux';
 
 // ** Third Party Components
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap';
-import { User, Power } from 'react-feather';
+import { User, Power, Star } from 'react-feather';
 
 // ** Realm-Web
 import { getRealmService } from '../../../../realm-cli';
+import { Stars } from '@react-three/drei';
 
 const customColors = [
   '#5E005E',
@@ -62,6 +63,10 @@ const UserDropdown = () => {
     }
   }, []);
 
+  const toFavouritesPage = () => {
+    history.push('/favourites');
+  }
+
   return (
     <UncontrolledDropdown tag='li' className='dropdown-user nav-item'>
       <DropdownToggle href='/' tag='a' className='nav-link dropdown-user-link' onClick={e => e.preventDefault()}>
@@ -85,6 +90,10 @@ const UserDropdown = () => {
         <DropdownItem tag={Link} to='/login' onClick={() => handleLogOut()}>
           <Power size={14} className='mr-75' />
           <span className='align-middle'>Logout</span>
+        </DropdownItem>
+        <DropdownItem tag={Link} to='/favourites' onClick={() => toFavouritesPage()}>
+          <Star size={14} className='mr-75' />
+          <span className='align-middle'>Favourites</span>
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>

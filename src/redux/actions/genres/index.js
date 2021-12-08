@@ -1,13 +1,13 @@
 import axios from 'axios';
+import { api, base } from '../../../network/Constants';
 
-// Get genres
 export const getGenres = () => {
-    return dispatch => {
-        return axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=932ce23b1d215099f52391b9c1fd7226').then(res => {
-            dispatch({
-                type: 'GET_GENRES',
-                genres: res.data
-            })
-        })
-    }
-}
+  return dispatch => {
+    return axios.get(`${base}/genre/movie/list?api_key=${api}`).then(res => {
+      dispatch({
+        type: 'GET_GENRES',
+        genres: res.data,
+      });
+    });
+  };
+};

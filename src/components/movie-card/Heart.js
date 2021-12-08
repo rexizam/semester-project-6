@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
-import { getRealmService } from '../../realm-cli';
+import { getRealmService, getUserProfilesCollection } from '../../realm-cli';
 
-const Heart = ({
-                 size = 24,
-                 filled,
-                 setFilled,
-                 strokeWidth = '2',
-                 movieId,
-                 favourites,
-               }) => {
-
+const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId, favourites }) => {
   const [color, setColor] = useState('#ddd');
 
   const realmService = getRealmService();
-  const mongodb = realmService.currentUser.mongoClient(process.env.REACT_APP_MONGO_CLIENT);
-  const collection = mongodb.db(process.env.REACT_APP_MONGODB_DB_NAME).collection('user_profiles');
 
   const handleMouseEnter = () => {
     setColor('#FF4040');
@@ -26,15 +16,13 @@ const Heart = ({
 
   const refreshUserCustomData = async () => {
     await realmService.currentUser.refreshCustomData();
-    console.log(realmService.currentUser.customData.favourites);
-
   };
 
   const updateCollection = async () => {
     const updated = favourites;
     if (!updated.includes(movieId)) {
       updated.push(movieId);
-      await collection.findOneAndReplace(
+      await getUserProfilesCollection().findOneAndReplace(
         {
           userID: realmService.currentUser.id,
         }, {
@@ -47,7 +35,7 @@ const Heart = ({
     } else if (updated.includes(movieId)) {
       const filteredFavourites = updated.filter(item => item !== movieId);
       console.log(filteredFavourites);
-      await collection.findOneAndReplace(
+      await getUserProfilesCollection.findOneAndReplace(
         {
           userID: realmService.currentUser.id,
         }, {

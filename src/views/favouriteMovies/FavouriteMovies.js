@@ -1,6 +1,7 @@
+// Own
 import Movies from '../../components/movie-page/Movies';
-import React from 'react';
+import { FAVOURITES } from '../../@core/assets/Strings';
 
-const FavouriteMovies = () => <Movies requestType={'favourites'}/>;
+const FavouriteMovies = () => <Movies requestType={FAVOURITES}/>;
 
-export default FavouriteMovies
+export default FavouriteMovies;

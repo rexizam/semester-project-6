@@ -1,6 +1,9 @@
 // React
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+// 3rd Party
+import { Provider as GridProvider, Row } from 'griding';
 
 // Own
 import MovieRow from './MovieRow';
@@ -8,11 +11,7 @@ import Chips from '../chips/Chips';
 import Searchbar from '../search-bar/Searchbar';
 import * as GridConfig from '../../configs/gridConfig';
 import { getGenres } from '../../../src/redux/actions/genres/index';
-
-// 3rd Party
-import { Provider as GridProvider, Row } from 'griding';
-import { getRealmService } from '../../realm-cli';
-import { getFavouriteMovies } from '../../redux/actions/favouriteMovies';
+import { getFavouriteMovieIds } from '../../redux/actions/favouriteMovies';
 
 /**
  * Container component for the movies to be displayed on a page.
@@ -53,26 +52,26 @@ const Movies = ({ requestType }) => {
    */
   const isLastPage = (pagesArray, page) => pagesArray.slice(-1)[0] === page;
   /**
-   * The useDispatch hook is used to trigger the dispatcher and fetch the movie genres.
-   * Extract the genres values from the state store through the genresReducer.
+   * The useDispatch hook is used to trigger the dispatcher and fetch the movie genres and favourite movies ids.
+   * Extract the genres and favourite movie ids values from the state store through the genresReducer and favouriteMovieIdsReducer.
    * Note: Do not remove the empty dependencies' array, this will cause the useEffect to trigger
    *       continuously.
    */
   const dispatch = useDispatch();
   const genresStore = useSelector(state => state.genresReducer.genres);
-  const favouritesStore = useSelector(state => state.favouriteMoviesReducer.favouriteMovies);
+  const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovies);
 
   useEffect(() => {
     dispatch(getGenres());
-    dispatch(getFavouriteMovies());
+    dispatch(getFavouriteMovieIds());
   }, []);
-  console.log(favouritesStore)
+
   return (
     <>
       {requestType === 'search' &&
       <>
         <Searchbar setSearchString={setSearchString} searchString={searchString} /><br />
-        <div style={{ marginBottom: 30 }}><Chips genres={genresStore.genres} setSearchGenres={setSearchGenres} /></div>
+        <div style={{ marginBottom: 30 }}><Chips genres={genresStore.genres} setSearchGenres={setSearchGenres} setSearchString={setSearchString} searchString={searchString} /></div>
       </>
       }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>

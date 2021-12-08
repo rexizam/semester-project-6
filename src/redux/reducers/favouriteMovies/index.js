@@ -1,15 +1,14 @@
 // ** Initial State
 const initialState = {
-  favouriteMovies: [],
-}
+  favouriteMovieIds: [],
+};
 
-const favouriteMoviesReducer = (state = initialState, action) => {
+const favouriteMovieIdsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_FAVOURITE_MOVIES':
-      console.log(action)
-      return { ...state, favouriteMovies: action.favouriteMovies}
+    case 'GET_FAVOURITE_MOVIE_IDS':
+      return { ...state, favouriteMovies: action.favouriteMovies };
     default:
-      return state
+      return state;
   }
-}
-export default favouriteMoviesReducer
+};
+export default favouriteMovieIdsReducer;

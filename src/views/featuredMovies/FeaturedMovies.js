@@ -1,6 +1,7 @@
-import React from 'react';
+// Own
 import Movies from '../../components/movie-page/Movies';
+import { FEATURED } from '../../@core/assets/Strings';
 
-const FeaturedMovies = () => <Movies requestType={'featured'}/>;
+const FeaturedMovies = () => <Movies requestType={FEATURED}/>;
 
 export default FeaturedMovies;

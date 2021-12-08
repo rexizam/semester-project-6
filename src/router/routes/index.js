@@ -18,12 +18,12 @@ const Routes = [
     component: lazy(() => import('../../views/searchMovies/SearchMovies').then(({ default: SearchMovies }) => ({ default: SearchMovies }))),
   },
   {
-    path: '/favourite-movies',
-    component:lazy(() => import('../../views/favouriteMovies/FavouriteMovies').then(({ default: FavouriteMovies }) => ({ default: FavouriteMovies }))),
-  },
-  {
     path: '/profile',
     component: lazy(() => import('../../views/profile/Profile').then(({ default: Profile }) => ({ default: Profile }))),
+  },
+  {
+    path: '/favourites',
+    component:lazy(() => import('../../views/favouriteMovies/FavouriteMovies').then(({ default: FavouriteMovies }) => ({ default: FavouriteMovies }))),
   },
   {
     path: '/register',
