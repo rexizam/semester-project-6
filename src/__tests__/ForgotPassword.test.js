@@ -1,8 +1,8 @@
-// React, Enzyme
-import * as React from 'react';
-
 // Own
-import { setupTestConfiguration, shallow } from '../utility/testing/TestConfiguration';
+import {
+  shallow,
+  setupTestConfiguration
+} from '../utility/testing/TestConfiguration';
 
 // Test suite configuration
 setupTestConfiguration();
