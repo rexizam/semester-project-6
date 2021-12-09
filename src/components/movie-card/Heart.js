@@ -1,24 +1,40 @@
+// React
 import React, { useState } from 'react';
 
-const Heart = ({
-                 size = 24,
-                 filled = false,
-                 strokeWidth = '2',
-               }) => {
+// Own
+import { getRealmService } from '../../realm-cli';
 
+const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId }) => {
   const [color, setColor] = useState('#ddd');
+  const realmService = getRealmService();
 
   const handleMouseEnter = () => {
     setColor('#FF4040');
-  }
+  };
 
   const handleMouseLeave = () => {
     setColor('#ddd');
-  }
+  };
+
+  const updateFavouriteMovies = async () => {
+    const favourites = await realmService.currentUser.functions.callFunction('getFavouriteMovies');
+    if (favourites === null) {
+      await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', [movieId]).then(setFilled(!filled));
+    } else {
+      const updated = favourites;
+      if (!updated.includes(movieId)) {
+        updated.push(movieId);
+        await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', updated).then(setFilled(!filled));
+      } else if (updated.includes(movieId)) {
+        const filteredFavourites = updated.filter(item => item !== movieId);
+        await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', filteredFavourites).then(setFilled(!filled));
+      }
+    }
+  };
 
   const handleClick = () => {
-    console.log('mouse clicked');
-  }
+    updateFavouriteMovies();
+  };
 
   return (
     <div onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()} onClick={() => handleClick()}>
@@ -38,7 +54,7 @@ const Heart = ({
         />
       </svg>
     </div>
-  )
-}
+  );
+};
 
 export default Heart;

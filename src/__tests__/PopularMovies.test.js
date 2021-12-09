@@ -1,5 +1,8 @@
 // Own
-import { setupTestConfiguration, shallow } from '../utility/testing/TestConfiguration';
+import {
+  shallow,
+  setupTestConfiguration
+} from '../utility/testing/TestConfiguration';
 import PopularMovies from '../views/popularMovies/PopularMovies';
 
 // Test suite configuration

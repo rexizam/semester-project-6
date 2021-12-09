@@ -2,15 +2,16 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+// 3rd Party
+import { Provider as GridProvider, Row } from 'griding';
+
 // Own
 import MovieRow from './MovieRow';
 import Chips from '../chips/Chips';
 import Searchbar from '../search-bar/Searchbar';
 import * as GridConfig from '../../configs/gridConfig';
 import { getGenres } from '../../../src/redux/actions/genres/index';
-
-// 3rd Party
-import { Provider as GridProvider, Row } from 'griding';
+import { getFavouriteMovieIds } from '../../redux/actions/favouriteMoviesIds';
 
 /**
  * Container component for the movies to be displayed on a page.
@@ -50,33 +51,33 @@ const Movies = ({ requestType }) => {
    * @returns {boolean} True if the current page is the last visible page, false otherwise.
    */
   const isLastPage = (pagesArray, page) => pagesArray.slice(-1)[0] === page;
-
   /**
-   * The useDispatch hook is used to trigger the dispatcher and fetch the movie genres.
-   * Extract the genres values from the state store through the genresReducer.
+   * The useDispatch hook is used to trigger the dispatcher and fetch the movie genres and favourite movies ids.
+   * Extract the genres and favourite movie ids values from the state store through the genresReducer and favouriteMovieIdsReducer.
    * Note: Do not remove the empty dependencies' array, this will cause the useEffect to trigger
    *       continuously.
    */
   const dispatch = useDispatch();
-  const store = useSelector(state => state.genresReducer.genres);
+  const genresStore = useSelector(state => state.genresReducer.genres);
+  const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
+
   useEffect(() => {
-    dispatch(
-      getGenres(),
-    );
+    dispatch(getGenres());
+    dispatch(getFavouriteMovieIds());
   }, []);
 
   return (
     <>
       {requestType === 'search' &&
       <>
-        <Searchbar setSearchString={setSearchString} searchString={searchString} /><br />
-        <div style={{ marginBottom: 30 }}><Chips genres={store.genres} setSearchGenres={setSearchGenres} /></div>
+        <Searchbar setSearchString={setSearchString} searchString={searchString} /><br/>
+        <div style={{ marginBottom: 30 }}><Chips genres={genresStore.genres} setSearchGenres={setSearchGenres} setSearchString={setSearchString} searchString={searchString} /></div>
       </>
       }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
         <Row vertical-gutter style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
           {pagesArray.map(page => (
-            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} />
+            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} favouriteMovieIds={favouritesStore.favouriteMovieIds} />
           ))}
         </Row>
       </GridProvider>

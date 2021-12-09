@@ -1,10 +1,15 @@
+// React
+import { Fragment, useEffect, useRef } from 'react';
+
+// 3rd party
 import { useFetch } from 'react-hooks-async';
 import { useInView } from 'react-intersection-observer';
-import MovieCard from '../movie-card/MovieCard';
-import { Fragment, useEffect, useRef } from 'react';
 import handleViewport from 'react-in-viewport';
 import { Cell } from 'griding';
+
+// Own
 import '../movie-card/movies.scss';
+import MovieCard from '../movie-card/MovieCard';
 import { api, base, responseConfigParameter } from '../../network/Constants';
 
 /**
@@ -12,23 +17,26 @@ import { api, base, responseConfigParameter } from '../../network/Constants';
  * @param page Data response page.
  * @param requestType The type of the request, one of ['featured', 'popular', 'search'], each is component-specific.
  * @param searchString In the case of the 'search' request, this is the API query parameter (movie name to search).
+ * @param searchGenres Array of genres to be added to the TMDb request query. A genre is added to the searchGenres array by
+ *                    being clicked on (on the respective chip label, i.e. "Drama") in the "SearchMovies" component/view.
  * @returns {string[]} Array of strings containing the request information.
  */
 const buildURL = (page, requestType, searchString, searchGenres) => {
   const pageParameter = `&page=${page}`;
-  // const genresSearchString = (searchGenres.map(searchGenre => searchGenre.id)).join(',');
-  // return ([`${base}/discover/movie`, `?api_key=${api}&with_genres=${genresSearchString}`, responseConfigParameter, pageParameter]);
   switch (requestType) {
-    case 'featured':
+    case 'featured': {
       return ([`${base}/discover/movie?sort_by=vote_average.desc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
-    case 'popular':
+    }
+    case 'popular': {
       return ([`${base}/discover/movie?sort_by=popularity.desc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
-    case 'search':
+    }
+    case 'search': {
       if (searchGenres && searchGenres.length >= 1) {
         const genresSearchString = (searchGenres.map(searchGenre => searchGenre.id)).join(',');
         return ([`${base}/discover/movie`, `?api_key=${api}&with_genres=${genresSearchString}`, responseConfigParameter, pageParameter]);
       }
       if (searchString !== ' ') return ([`${base}/search/movie?query=${searchString}`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
+    }
   }
 };
 
@@ -52,16 +60,20 @@ const InfiniteScroll = ({ page, setPage }) => {
  * @param requestType The type of request that the component scopes to, one of ['featured', 'popular', 'search']
  * @param searchString In the case of the requestType being 'search', the movie name (string) to search for.
  * @param searchGenres In the case of the requestType being 'search', the movie genres (array of objects) to search for.
- * @returns {JSX.Element|unknown[]|null}
- * @constructor
+ * @param favouriteMovieIds List of ids of the movies that a user has as favourites.
  */
-const MovieRow = ({ page, setPage, isLastPage, requestType, searchString, searchGenres }) => {
+const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLastPage, favouriteMovieIds }) => {
   const { pending, error, result, abort } = useFetch(buildURL(page, requestType, searchString, searchGenres).join(''));
   const [ref, inView] = useInView();
   const aborted = useRef(false);
   const totalPages = result?.total_pages;
-
   const MovieCardBlock = handleViewport(MovieCard);
+
+  const checkIsFavourite = (id) => {
+    if (favouriteMovieIds && favouriteMovieIds.length >= 1) {
+      return favouriteMovieIds.includes(id);
+    }
+  };
 
   if (requestType === 'search' && searchString === '' && searchGenres.length === 0) {
     abort();
@@ -92,7 +104,7 @@ const MovieRow = ({ page, setPage, isLastPage, requestType, searchString, search
     <Fragment>
       {result?.results?.map(entry => (
         <Cell key={entry.id} xs={6} sm={4} md={3} xg={2}>
-          <MovieCardBlock {...entry} />
+          <MovieCardBlock {...entry} isFavourite={checkIsFavourite(entry.id)} favourites={favouriteMovieIds} />
         </Cell>
       ))}
       {isLastPage && totalPages && totalPages > page && (

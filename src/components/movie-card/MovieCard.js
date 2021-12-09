@@ -1,11 +1,17 @@
+// React
+import { useState } from 'react';
+
+// 3rd party
+import { ArrowDown } from 'react-feather';
+import ProgressiveImage from 'react-progressive-graceful-image';
+
+// Own
 import MovieInfo from './MovieInfo';
 import Rating from './Rating';
-import ProgressiveImage from 'react-progressive-graceful-image';
 import Heart from './Heart';
-import { ArrowDown } from 'react-feather'
 
-const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
-
+const MovieCard = ({ loading, loadMore, page, setPage, isFavourite, ...props }) => {
+  const [filled, setFilled] = useState(isFavourite);
   const { inViewport, forwardedRef } = props;
   const title = props?.title || props?.name;
   const description = props?.overview || props?.biography;
@@ -17,7 +23,7 @@ const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
   const truncate = (str, n) => {
     if (str?.length > n) {
       let trimmedString = str.substr(0, n - 1);
-      trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))) + "...";
+      trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))) + '...';
       return trimmedString;
     } else {
       return str;
@@ -30,9 +36,7 @@ const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
 
   return (
     <div ref={forwardedRef} className='movie'>
-
       <div className={'overlay'} />
-
       {image && inViewport && (
         <ProgressiveImage
           src={`https://image.tmdb.org/t/p/w300/${image}`}
@@ -42,13 +46,15 @@ const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
         </ProgressiveImage>
       )}
 
-      {loadMore && inViewport &&  (
+      {loadMore && inViewport && (
         <button className={'movie-card-button'} onClick={() => handleClick()}>
-          <div className={'loadMore'}><div>Load more</div><ArrowDown size={20} color={'#737373'}/></div>
+          <div className={'loadMore'}>
+            <div>Load more</div>
+            <ArrowDown size={20} color={'#737373'} /></div>
         </button>
       )}
 
-      {!loadMore && inViewport &&  (
+      {!loadMore && inViewport && (
         <>
           {title && (<h2 className='movie__title'>{truncate(title, 60)}</h2>)}
           {description && (<span className='movie__description'>{truncate(description, 160)}</span>)}
@@ -58,7 +64,7 @@ const MovieCard = ({ loading, loadMore, page, setPage, ...props }) => {
 
           <div className='movie__imdb'>
             <Rating rating={score} />
-            <Heart />
+            <Heart movieId={props.id} filled={filled} setFilled={setFilled}/>
           </div>
         </>
       )}

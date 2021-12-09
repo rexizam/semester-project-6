@@ -1,8 +1,20 @@
-import { Button } from 'reactstrap';
+// React
 import { Link } from 'react-router-dom';
-import notAuthImg from '../../assets/images/pages/not-authorized-dark.svg';
 
+// 3rd party
+import { Button } from 'reactstrap';
+
+// Own
 import '@styles/base/pages/page-misc.scss';
+import notAuthImg from '../../assets/images/pages/not-authorized-dark.svg';
+import {
+  LOGIN_V2,
+  NOT_AUTHORIZED_HEADER,
+  NOT_AUTHORIZED_P_MESSAGE,
+  NOT_AUTHORIZED_H_MESSAGE,
+  NOT_AUTHORIZED_BUTTON_R_MESSAGE,
+  NOT_AUTHORIZED_IMAGE_ALT_MESSAGE
+} from '../../@core/assets/Strings';
 
 const NotAuthorized = () => {
   return (
@@ -56,19 +68,14 @@ const NotAuthorized = () => {
             </g>
           </g>
         </svg>
-        <h2 className='brand-text text-primary ml-1'>Vuexy</h2>
+        <h2 className='brand-text text-primary ml-1'>{NOT_AUTHORIZED_HEADER}</h2>
       </a>
       <div className='misc-inner p-2 p-sm-3'>
         <div className='w-100 text-center'>
-          <h2 className='mb-1'>You are not authorized! 🔐</h2>
-          <p className='mb-2'>
-            The Webtrends Marketing Lab website in IIS uses the default IUSR account credentials to access the web pages
-            it serves.
-          </p>
-          <Button.Ripple tag={Link} to='/pages/login-v2' color='primary' className='btn-sm-block mb-1'>
-            Back to login
-          </Button.Ripple>
-          <img className='img-fluid' src={notAuthImg} alt='Not authorized page' />
+          <h2 className='mb-1'>{NOT_AUTHORIZED_H_MESSAGE}</h2>
+          <p className='mb-2'>${NOT_AUTHORIZED_P_MESSAGE}</p>
+          <Button.Ripple tag={Link} to={LOGIN_V2} color='primary' className='btn-sm-block mb-1'>${NOT_AUTHORIZED_BUTTON_R_MESSAGE}</Button.Ripple>
+          <img className='img-fluid' src={notAuthImg} alt={NOT_AUTHORIZED_IMAGE_ALT_MESSAGE} />
         </div>
       </div>
     </div>

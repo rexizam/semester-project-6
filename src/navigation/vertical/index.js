@@ -1,4 +1,4 @@
-import { Film, TrendingUp, Search } from 'react-feather'
+import { Film, TrendingUp, Search, Star } from 'react-feather';
 
 export default [
   {

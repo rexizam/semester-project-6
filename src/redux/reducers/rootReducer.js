@@ -4,12 +4,14 @@ import { combineReducers } from 'redux'
 // ** Reducers Imports
 import navbar from './navbar'
 import layout from './layout'
-import genresReducer from '../reducers/genres/index'
+import genresReducer from './genres'
+import favouriteMovieIdsReducer from './favouriteMovieIds';
 
 const rootReducer = combineReducers({
   navbar,
   layout,
-  genresReducer
+  genresReducer,
+  favouriteMovieIdsReducer
 })
 
-export default rootReducer
+export default rootReducer;

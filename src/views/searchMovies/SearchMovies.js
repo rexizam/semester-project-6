@@ -1,6 +1,7 @@
+// Own
 import Movies from '../../components/movie-page/Movies';
-import React from 'react';
+import { SEARCH } from '../../@core/assets/Strings';
 
-const SearchMovies = () => <Movies requestType={'search'}/>;
+const SearchMovies = () => <Movies requestType={SEARCH}/>;
 
-export default SearchMovies
+export default SearchMovies;
