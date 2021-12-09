@@ -54,7 +54,7 @@ const Login = props => {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
 
-    const {register, errors, handleSubmit} = useForm();
+  const { register, errors, handleSubmit } = useForm({ reValidateMode: 'onBlur' });
 
     const onSubmit = async () => {
         if (isObjEmpty(errors)) {
