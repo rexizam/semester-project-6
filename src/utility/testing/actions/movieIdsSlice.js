@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { favouriteIds } from '../testUtilities';
+import { favouriteIds } from '../MockData';
 
 const initialState = [
   {
@@ -13,12 +13,14 @@ const favouriteMovieIdsSlice = createSlice({
   initialState,
   reducers: {
     getFavouriteMovieIds(state, action: PayloadAction<number>) {
-      if (!action) {
+      if (action) {
+        console.log(action, '1')
         state.push({
           favouriteMovieIds: favouriteIds,
           completed: false,
         });
       } else {
+        console.log(action, '2')
         favouriteIds.push(action.payload);
         state = [];
         state.push({

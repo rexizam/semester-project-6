@@ -78,3 +78,18 @@ export const genres = [
     name: 'Western',
   },
 ].map(genre => genre.name);
+
+export const searchGenres = [
+  {
+    id: 12,
+    name: 'Adventure',
+  },
+  {
+    id: 16,
+    name: 'Animation',
+  },
+  {
+    id: 35,
+    name: 'Comedy',
+  },
+];

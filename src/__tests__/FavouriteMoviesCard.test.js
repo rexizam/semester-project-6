@@ -4,8 +4,8 @@ import {
   setupTestConfiguration
 } from '../utility/testing/TestConfiguration';
 import FavouriteMoviesCard from '../views/favouriteMovies/FavouriteMoviesCard';
-import { favouriteIds } from './testUtilities';
 import MovieCard from '../components/movie-card/MovieCard';
+import { favouriteIds } from '../utility/testing/MockData';
 
 // Test suite configuration
 setupTestConfiguration();

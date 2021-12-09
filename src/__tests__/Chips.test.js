@@ -6,9 +6,9 @@ import Chips from '../components/chips/Chips';
 import {
   mount,
   shallow,
-  setupTestConfiguration
+  setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
-import { genres } from './testUtilities';
+import { genres, searchGenres } from '../utility/testing/MockData';
 
 // Test suite configuration
 setupTestConfiguration();
@@ -46,20 +46,6 @@ describe('Chips', () => {
 
   it('should be rendered with setSearchGenres.', async () => {
     // Arrange
-    const searchGenres = [
-      {
-        id: 12,
-        name: 'Adventure',
-      },
-      {
-        id: 16,
-        name: 'Animation',
-      },
-      {
-        id: 35,
-        name: 'Comedy',
-      },
-    ];
     wrapper = mount(<Chips genres={genres} setSearchGenres={setSearchGenres} />);
     // Act
     setSearchGenres(searchGenres);
@@ -69,7 +55,10 @@ describe('Chips', () => {
 
   it('should have clickable chips', async () => {
     // Arrange
-    wrapper = mount(<Chips genres={genres} setSearchGenres={setSearchGenres} />);
+    const setSearchString = (newSearchString) => {
+      wrapper.props().searchString = newSearchString;
+    };
+    wrapper = mount(<Chips genres={genres} setSearchGenres={setSearchGenres} setSearchString={setSearchString} />);
     const chip = (wrapper.find('#chip-0').at(0));
     // Act
     act(() => {
