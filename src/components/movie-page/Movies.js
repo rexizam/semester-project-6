@@ -11,7 +11,7 @@ import Chips from '../chips/Chips';
 import Searchbar from '../search-bar/Searchbar';
 import * as GridConfig from '../../configs/gridConfig';
 import { getGenres } from '../../../src/redux/actions/genres/index';
-import { getFavouriteMovieIds } from '../../redux/actions/favouriteMovies';
+import { getFavouriteMovieIds } from '../../redux/actions/favouriteMoviesIds';
 
 /**
  * Container component for the movies to be displayed on a page.
@@ -59,7 +59,7 @@ const Movies = ({ requestType }) => {
    */
   const dispatch = useDispatch();
   const genresStore = useSelector(state => state.genresReducer.genres);
-  const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovies);
+  const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
 
   useEffect(() => {
     dispatch(getGenres());
@@ -70,14 +70,14 @@ const Movies = ({ requestType }) => {
     <>
       {requestType === 'search' &&
       <>
-        <Searchbar setSearchString={setSearchString} searchString={searchString} /><br />
+        <Searchbar setSearchString={setSearchString} searchString={searchString} /><br/>
         <div style={{ marginBottom: 30 }}><Chips genres={genresStore.genres} setSearchGenres={setSearchGenres} setSearchString={setSearchString} searchString={searchString} /></div>
       </>
       }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
         <Row vertical-gutter style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
           {pagesArray.map(page => (
-            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} favourites={favouritesStore} />
+            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} favouriteMovieIds={favouritesStore.favouriteMovieIds} />
           ))}
         </Row>
       </GridProvider>

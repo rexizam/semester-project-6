@@ -1,5 +1,8 @@
+// React
 import React, { useState } from 'react';
-import { getRealmService, getUserProfilesCollection } from '../../realm-cli';
+
+// Own
+import { getRealmService } from '../../realm-cli';
 
 const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId }) => {
   const [color, setColor] = useState('#ddd');
@@ -15,7 +18,6 @@ const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId }) => 
 
   const updateFavouriteMovies = async () => {
     const favourites = await realmService.currentUser.functions.callFunction('getFavouriteMovies');
-    console.log(favourites);
     if (favourites === null) {
       await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', [movieId]).then(setFilled(!filled));
     } else {

@@ -5,7 +5,7 @@ import { combineReducers } from 'redux'
 import navbar from './navbar'
 import layout from './layout'
 import genresReducer from './genres'
-import favouriteMovieIdsReducer from './favouriteMovies';
+import favouriteMovieIdsReducer from './favouriteMovieIds';
 
 const rootReducer = combineReducers({
   navbar,
@@ -14,4 +14,4 @@ const rootReducer = combineReducers({
   favouriteMovieIdsReducer
 })
 
-export default rootReducer
+export default rootReducer;

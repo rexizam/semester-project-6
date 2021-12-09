@@ -1,9 +1,14 @@
+// React
+import { useState } from 'react';
+
+// 3rd party
+import { ArrowDown } from 'react-feather';
+import ProgressiveImage from 'react-progressive-graceful-image';
+
+// Own
 import MovieInfo from './MovieInfo';
 import Rating from './Rating';
-import ProgressiveImage from 'react-progressive-graceful-image';
 import Heart from './Heart';
-import { ArrowDown } from 'react-feather';
-import { useState } from 'react';
 
 const MovieCard = ({ loading, loadMore, page, setPage, isFavourite, ...props }) => {
   const [filled, setFilled] = useState(isFavourite);
@@ -31,9 +36,7 @@ const MovieCard = ({ loading, loadMore, page, setPage, isFavourite, ...props }) 
 
   return (
     <div ref={forwardedRef} className='movie'>
-
       <div className={'overlay'} />
-
       {image && inViewport && (
         <ProgressiveImage
           src={`https://image.tmdb.org/t/p/w300/${image}`}

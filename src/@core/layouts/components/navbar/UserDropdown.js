@@ -87,13 +87,13 @@ const UserDropdown = () => {
           <User size={14} className='mr-75' />
           <span className='align-middle'>Profile</span>
         </DropdownItem>
-        <DropdownItem tag={Link} to='/login' onClick={() => handleLogOut()}>
-          <Power size={14} className='mr-75' />
-          <span className='align-middle'>Logout</span>
-        </DropdownItem>
         <DropdownItem tag={Link} to='/favourites' onClick={() => toFavouritesPage()}>
           <Star size={14} className='mr-75' />
           <span className='align-middle'>Favourites</span>
+        </DropdownItem>
+        <DropdownItem tag={Link} to='/login' onClick={() => handleLogOut()}>
+          <Power size={14} className='mr-75' />
+          <span className='align-middle'>Logout</span>
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>

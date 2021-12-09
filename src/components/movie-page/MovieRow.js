@@ -1,10 +1,15 @@
+// React
+import { Fragment, useEffect, useRef } from 'react';
+
+// 3rd party
 import { useFetch } from 'react-hooks-async';
 import { useInView } from 'react-intersection-observer';
-import MovieCard from '../movie-card/MovieCard';
-import { Fragment, useEffect, useRef } from 'react';
 import handleViewport from 'react-in-viewport';
 import { Cell } from 'griding';
+
+// Own
 import '../movie-card/movies.scss';
+import MovieCard from '../movie-card/MovieCard';
 import { api, base, responseConfigParameter } from '../../network/Constants';
 
 /**
@@ -12,6 +17,8 @@ import { api, base, responseConfigParameter } from '../../network/Constants';
  * @param page Data response page.
  * @param requestType The type of the request, one of ['featured', 'popular', 'search'], each is component-specific.
  * @param searchString In the case of the 'search' request, this is the API query parameter (movie name to search).
+ * @param searchGenres Array of genres to be added to the TMDb request query. A genre is added to the searchGenres array by
+ *                    being clicked on (on the respective chip label, i.e. "Drama") in the "SearchMovies" component/view.
  * @returns {string[]} Array of strings containing the request information.
  */
 const buildURL = (page, requestType, searchString, searchGenres) => {
@@ -53,10 +60,9 @@ const InfiniteScroll = ({ page, setPage }) => {
  * @param requestType The type of request that the component scopes to, one of ['featured', 'popular', 'search']
  * @param searchString In the case of the requestType being 'search', the movie name (string) to search for.
  * @param searchGenres In the case of the requestType being 'search', the movie genres (array of objects) to search for.
- * @returns {JSX.Element|unknown[]|null}
- * @constructor
+ * @param favouriteMovieIds List of ids of the movies that a user has as favourites.
  */
-const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLastPage, favourites }) => {
+const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLastPage, favouriteMovieIds }) => {
   const { pending, error, result, abort } = useFetch(buildURL(page, requestType, searchString, searchGenres).join(''));
   const [ref, inView] = useInView();
   const aborted = useRef(false);
@@ -64,8 +70,8 @@ const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLa
   const MovieCardBlock = handleViewport(MovieCard);
 
   const checkIsFavourite = (id) => {
-    if (favourites && favourites.length >= 1) {
-      return favourites.includes(id);
+    if (favouriteMovieIds && favouriteMovieIds.length >= 1) {
+      return favouriteMovieIds.includes(id);
     }
   };
 
@@ -98,7 +104,7 @@ const MovieRow = ({ requestType, searchString, searchGenres, page, setPage, isLa
     <Fragment>
       {result?.results?.map(entry => (
         <Cell key={entry.id} xs={6} sm={4} md={3} xg={2}>
-          <MovieCardBlock {...entry} isFavourite={checkIsFavourite(entry.id)} favourites={favourites} />
+          <MovieCardBlock {...entry} isFavourite={checkIsFavourite(entry.id)} favourites={favouriteMovieIds} />
         </Cell>
       ))}
       {isLastPage && totalPages && totalPages > page && (
