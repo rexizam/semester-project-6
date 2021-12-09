@@ -1,7 +1,8 @@
 // Own
 import {
+  mount,
   shallow,
-  setupTestConfiguration
+  setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
 import FavouriteMoviesCard from '../views/favouriteMovies/FavouriteMoviesCard';
 import MovieCard from '../components/movie-card/MovieCard';
