@@ -77,6 +77,21 @@ export const genres = [
     id: 37,
     name: 'Western',
   },
+].map(genre => genre);
+
+export const toggledChips = [
+  {
+    id: 12,
+    name: 'Adventure',
+  },
+  {
+    id: 16,
+    name: 'Animation',
+  },
+  {
+    id: 35,
+    name: 'Comedy',
+  }
 ].map(genre => genre.name);
 
 export const searchGenres = [

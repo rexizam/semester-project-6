@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { getRealmService } from '../../realm-cli';
 
 const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId }) => {
+
   const [color, setColor] = useState('#ddd');
   const realmService = getRealmService();
 
@@ -32,8 +33,8 @@ const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId }) => 
     }
   };
 
-  const handleClick = () => {
-    updateFavouriteMovies();
+  const handleClick = async () => {
+    await updateFavouriteMovies();
   };
 
   return (

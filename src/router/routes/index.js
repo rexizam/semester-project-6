@@ -26,6 +26,14 @@ const Routes = [
     component:lazy(() => import('../../views/favouriteMovies/FavouriteMovies').then(({ default: FavouriteMovies }) => ({ default: FavouriteMovies }))),
   },
   {
+    path: '/movieDetails/:id',
+    component: lazy(() => import('../../views/movieDetails/MovieDetails').then(({ default: MovieDetails }) => ({ default: MovieDetails }))),
+  },
+  {
+    path: '/personDetails/:id',
+    component: lazy(() => import('../../views/PersonDetails/PersonDetails').then(({ default: PersonDetails }) => ({ default: PersonDetails }))),
+  },
+  {
     path: '/register',
     component: lazy(() => import('../../views/authentication/Register').then(({ default: Register }) => ({ default: Register }))),
     layout: 'BlankLayout',

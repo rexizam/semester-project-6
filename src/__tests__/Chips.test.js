@@ -8,7 +8,7 @@ import {
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
-import { genres, searchGenres } from '../utility/testing/MockData';
+import { genres, searchGenres, toggledChips } from '../utility/testing/MockData';
 
 // Test suite configuration
 setupTestConfiguration();
@@ -35,7 +35,7 @@ describe('Chips', () => {
 
   it('should be rendered with genres.', async () => {
     // Arrange & Act
-    wrapper = mount(<Chips genres={genres} />);
+    wrapper = mount(<Chips genres={genres} toggledGenres={toggledChips} />);
     // Assert
     expect(wrapper.props().genres).toEqual(genres);
     expect(wrapper.props().genres.length).toEqual(genres.length);
@@ -46,19 +46,19 @@ describe('Chips', () => {
 
   it('should be rendered with setSearchGenres.', async () => {
     // Arrange
-    wrapper = mount(<Chips genres={genres} setSearchGenres={setSearchGenres} />);
+    wrapper = mount(<Chips genres={genres} toggledGenres={toggledChips} />);
     // Act
     setSearchGenres(searchGenres);
     // Assert
     expect(wrapper.props().genres).toEqual(searchGenres);
   });
 
-  it('should have clickable chips', async () => {
+  it('should have clickable chips',  () => {
     // Arrange
     const setSearchString = (newSearchString) => {
       wrapper.props().searchString = newSearchString;
     };
-    wrapper = mount(<Chips genres={genres} setSearchGenres={setSearchGenres} setSearchString={setSearchString} />);
+    wrapper = mount(<Chips genres={genres} toggledGenres={toggledChips} setSearchGenres={setSearchGenres} setSearchString={setSearchString} />);
     const chip = (wrapper.find('#chip-0').at(0));
     // Act
     act(() => {
