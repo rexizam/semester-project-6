@@ -1,17 +1,17 @@
-import { configure } from "enzyme";
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import 'regenerator-runtime/runtime';
-import React from 'react';
+// Own
+import {
+  shallow,
+  setupTestConfiguration
+} from '../utility/testing/TestConfiguration';
+import App from '../App';
 
-global.React = React;
-configure({ adapter: new Adapter() });
-const { shallow } = require('enzyme');
-
+setupTestConfiguration();
 /**
  * Test if the application as a whole renders without errors
  */
-
-it("renders without crashing", async () => {
-  const App = (await import('../App')).default;
-  shallow(<App />);
+describe('App', () => {
+  it('renders without crashing', async () => {
+    const App = (await import('../App')).default;
+    shallow(<App />);
+  });
 });

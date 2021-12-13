@@ -34,20 +34,25 @@ import './assets/scss/style.scss';
 
 // ** Realm-Web
 import * as Realm from 'realm-web';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 new Realm.App({ id: process.env.REACT_APP_REALM_APP_ID });
+
+const queryClient = new QueryClient();
 
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App').then(({ default: LazyApp }) => ({ default: LazyApp })));
 
 ReactDOM.render(
   <Provider store={store}>
-    <Suspense fallback={<Spinner />}>
-      <ThemeContext>
-        <LazyApp />
-        <ToastContainer newestOnTop />
-      </ThemeContext>
-    </Suspense>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<Spinner />}>
+        <ThemeContext>
+          <LazyApp />
+          <ToastContainer newestOnTop />
+        </ThemeContext>
+      </Suspense>
+    </QueryClientProvider>
   </Provider>,
   document.getElementById('root'),
 );

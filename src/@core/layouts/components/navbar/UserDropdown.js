@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 
 // ** Third Party Components
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap';
-import { User, Power } from 'react-feather';
+import { User, Power, Heart } from 'react-feather';
 
 // ** Realm-Web
 import { getRealmService } from '../../../../realm-cli';
@@ -34,26 +34,9 @@ const UserDropdown = () => {
   // ** Get App id from RealmAPI
   const realmService = getRealmService();
 
-  // ** Store Vars
-  const dispatch = useDispatch();
-
   // ** State
   const [userData, setUserData] = useState(null);
   const history = useHistory();
-
-  const toProfilePage = () => {
-    history.push('/profile');
-  }
-
-  const handleLogOut = async () => {
-    await realmService.currentUser.logOut();
-    history.push('/login');
-  }
-
-  const refreshUserCustomData = async () => {
-    await realmService.currentUser.refreshCustomData();
-    return realmService.currentUser.customData.userName;
-  };
 
   //** ComponentDidMount
   useEffect(() => {
@@ -61,6 +44,19 @@ const UserDropdown = () => {
       setUserData(realmService.currentUser.customData.userName);
     }
   }, []);
+
+  const toProfilePage = () => {
+    history.push('/profile');
+  }
+
+  const toFavouritesPage = () => {
+    history.push('/favourites');
+  }
+
+  const handleLogOut = async () => {
+    await realmService.currentUser.logOut();
+    history.push('/login');
+  }
 
   return (
     <UncontrolledDropdown tag='li' className='dropdown-user nav-item'>
@@ -81,6 +77,10 @@ const UserDropdown = () => {
         <DropdownItem tag={Link} to='/profile' onClick={() => toProfilePage()}>
           <User size={14} className='mr-75' />
           <span className='align-middle'>Profile</span>
+        </DropdownItem>
+        <DropdownItem tag={Link} to='/favourites' onClick={() => toFavouritesPage()}>
+          <Heart size={14} className='mr-75' />
+          <span className='align-middle'>Favourites</span>
         </DropdownItem>
         <DropdownItem tag={Link} to='/login' onClick={() => handleLogOut()}>
           <Power size={14} className='mr-75' />

@@ -1,0 +1,15 @@
+.grid {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.gridItem {
+  padding: 0;
+}
+
+.gridRow {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 1rem;
+}

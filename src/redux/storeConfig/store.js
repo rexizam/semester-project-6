@@ -1,8 +1,10 @@
 // ** Redux, Thunk & Root Reducer Imports
 import thunk from 'redux-thunk'
 import createDebounce from 'redux-debounced'
-import rootReducer from '../reducers/rootReducer'
 import { createStore, applyMiddleware, compose } from 'redux'
+
+// Own
+import rootReducer from '../reducers/rootReducer'
 
 // ** init middleware
 const middleware = [thunk, createDebounce()]

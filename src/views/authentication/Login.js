@@ -1,18 +1,13 @@
+// React
 import {useState, Fragment} from 'react';
-import classnames from 'classnames';
-import Avatar from '../../@core/components/avatar';
 import {useForm} from 'react-hook-form';
-import {toast, Slide} from 'react-toastify';
 import {Link, useHistory} from 'react-router-dom';
-import InputPasswordToggle from '../../@core/components/input-password-toggle';
-import {isObjEmpty} from '../../utility/Utils';
+
+// 3rd party
+import classnames from 'classnames';
+import {toast, Slide} from 'react-toastify';
 import {Coffee} from 'react-feather';
-import SpinnerComponent from '../../@core/components/spinner/Fallback-spinner';
 import * as Realm from 'realm-web';
-import {getRealmService} from '../../realm-cli';
-import {ReactComponent as Logo} from '../../assets/images/logo/logo-secondary.svg';
-import '@styles/base/pages/page-auth.scss';
-import IntroScene from '../../components/intro-scene-3d';
 import {
     Alert,
     Row,
@@ -27,6 +22,15 @@ import {
     Button,
 } from 'reactstrap';
 
+// Own
+import '@styles/base/pages/page-auth.scss';
+import {isObjEmpty} from '../../utility/Utils';
+import {getRealmService} from '../../realm-cli';
+import IntroScene from '../../components/intro-scene-3d';
+import Avatar from '../../@core/components/avatar';
+import InputPasswordToggle from '../../@core/components/input-password-toggle';
+import SpinnerComponent from '../../@core/components/spinner/Fallback-spinner';
+import {ReactComponent as Logo} from '../../assets/images/logo/logo-secondary.svg';
 
 const ToastContent = ({name}) => (
     <Fragment>
@@ -50,7 +54,7 @@ const Login = props => {
     const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
 
-    const {register, errors, handleSubmit} = useForm();
+  const { register, errors, handleSubmit } = useForm({ reValidateMode: 'onBlur' });
 
     const onSubmit = async () => {
         if (isObjEmpty(errors)) {
