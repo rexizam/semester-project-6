@@ -8,9 +8,8 @@ import handleViewport from 'react-in-viewport';
 import { Cell } from 'griding';
 
 // Own
-import '../movie-card/movies.scss';
 import MovieCard from '../movie-card/MovieCard';
-import { api, base, responseConfigParameter } from '../../network/Constants';
+import { api, base } from '../../network/Constants';
 
 /**
  * Function to build the request URL (for the TMDb API).
@@ -25,17 +24,17 @@ const buildURL = (page, requestType, searchString, searchGenres) => {
   const pageParameter = `&page=${page}`;
   switch (requestType) {
     case 'featured': {
-      return ([`${base}/discover/movie?sort_by=vote_average.desc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
+      return ([`${base}/discover/movie?sort_by=vote_count.desc`, `&api_key=${api}`, pageParameter]);
     }
     case 'popular': {
-      return ([`${base}/discover/movie?sort_by=popularity.desc`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
+      return ([`${base}/discover/movie?sort_by=popularity.desc`, `&api_key=${api}`, pageParameter]);
     }
     case 'search': {
       if (searchGenres && searchGenres.length >= 1) {
         const genresSearchString = (searchGenres.map(searchGenre => searchGenre.id)).join(',');
-        return ([`${base}/discover/movie`, `?api_key=${api}&with_genres=${genresSearchString}`, responseConfigParameter, pageParameter]);
+        return ([`${base}/discover/movie`, `?api_key=${api}&with_genres=${genresSearchString}`, pageParameter]);
       }
-      if (searchString !== ' ') return ([`${base}/search/movie?query=${searchString}`, `&api_key=${api}`, responseConfigParameter, pageParameter]);
+      if (searchString !== ' ') return ([`${base}/search/movie?query=${searchString}`, `&api_key=${api}`, pageParameter]);
     }
   }
 };

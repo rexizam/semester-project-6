@@ -13,11 +13,10 @@ import { useDispatch } from 'react-redux';
 
 // ** Third Party Components
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap';
-import { User, Power, Star } from 'react-feather';
+import { User, Power, Heart } from 'react-feather';
 
 // ** Realm-Web
 import { getRealmService } from '../../../../realm-cli';
-import { Stars } from '@react-three/drei';
 
 const customColors = [
   '#5E005E',
@@ -35,26 +34,9 @@ const UserDropdown = () => {
   // ** Get App id from RealmAPI
   const realmService = getRealmService();
 
-  // ** Store Vars
-  const dispatch = useDispatch();
-
   // ** State
   const [userData, setUserData] = useState(null);
   const history = useHistory();
-
-  const toProfilePage = () => {
-    history.push('/profile');
-  }
-
-  const handleLogOut = async () => {
-    await realmService.currentUser.logOut();
-    history.push('/login');
-  }
-
-  const refreshUserCustomData = async () => {
-    await realmService.currentUser.refreshCustomData();
-    return realmService.currentUser.customData.userName;
-  };
 
   //** ComponentDidMount
   useEffect(() => {
@@ -63,8 +45,17 @@ const UserDropdown = () => {
     }
   }, []);
 
+  const toProfilePage = () => {
+    history.push('/profile');
+  }
+
   const toFavouritesPage = () => {
     history.push('/favourites');
+  }
+
+  const handleLogOut = async () => {
+    await realmService.currentUser.logOut();
+    history.push('/login');
   }
 
   return (
@@ -88,7 +79,7 @@ const UserDropdown = () => {
           <span className='align-middle'>Profile</span>
         </DropdownItem>
         <DropdownItem tag={Link} to='/favourites' onClick={() => toFavouritesPage()}>
-          <Star size={14} className='mr-75' />
+          <Heart size={14} className='mr-75' />
           <span className='align-middle'>Favourites</span>
         </DropdownItem>
         <DropdownItem tag={Link} to='/login' onClick={() => handleLogOut()}>

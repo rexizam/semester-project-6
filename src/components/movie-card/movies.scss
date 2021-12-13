@@ -15,6 +15,17 @@
   cursor: pointer;
   background-color: rgba(122, 122, 122, 0.35);
 
+  .hiddenLink {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+  }
+
   .overlay {
     position: absolute;
     top: 0;
@@ -97,7 +108,7 @@
   }
 
   .movie__imdb {
-    z-index: 2;
+    z-index: 4;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -108,7 +119,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #EBBA33;
+      border: 2px solid #6cc4b4;
       border-radius: .5rem;
       transform: scale(0);
       opacity: 0;
@@ -121,12 +132,12 @@
         min-width: 2.5rem;
       }
 
-      .imdb {
+      .tmdb {
         color: #1e1e1e;
         font-weight: 600;
-        background: #EBBA33;
+        background: #6cc4b4;
         padding: .3rem;
-        border-radius: 0 .45rem .45rem 0;
+        border-radius: 0 .25rem .25rem 0;
       }
     }
   }

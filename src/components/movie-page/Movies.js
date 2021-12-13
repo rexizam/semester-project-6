@@ -69,15 +69,24 @@ const Movies = ({ requestType }) => {
   return (
     <>
       {requestType === 'search' &&
-      <>
-        <Searchbar setSearchString={setSearchString} searchString={searchString} /><br/>
-        <div style={{ marginBottom: 30 }}><Chips genres={genresStore.genres} setSearchGenres={setSearchGenres} setSearchString={setSearchString} searchString={searchString} /></div>
-      </>
+        <>
+          <Searchbar setSearchString={setSearchString} searchString={searchString} /><br />
+          <div style={{ marginBottom: 30 }}><Chips genres={genresStore.genres} setSearchGenres={setSearchGenres}
+                                                   setSearchString={setSearchString} searchString={searchString} />
+          </div>
+        </>
       }
       <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
         <Row vertical-gutter style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
           {pagesArray.map(page => (
-            <MovieRow key={page} requestType={requestType} searchString={searchString} searchGenres={searchGenres} page={page} setPage={setPage} isLastPage={isLastPage(pagesArray, page)} favouriteMovieIds={favouritesStore.favouriteMovieIds} />
+            <MovieRow key={page}
+                      requestType={requestType}
+                      searchString={searchString}
+                      searchGenres={searchGenres}
+                      page={page} setPage={setPage}
+                      isLastPage={isLastPage(pagesArray, page)}
+                      favouriteMovieIds={favouritesStore.favouriteMovieIds}
+            />
           ))}
         </Row>
       </GridProvider>
