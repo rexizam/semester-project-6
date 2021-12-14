@@ -1,9 +1,9 @@
 // Own
-import IntroScene from '../components/intro-scene-3d';
 import {
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import IntroScene from '../components/intro-scene-3d';
 
 // Test suite configuration
 setupTestConfiguration();

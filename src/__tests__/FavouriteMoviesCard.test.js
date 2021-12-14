@@ -1,23 +1,26 @@
 // Own
 import {
-  mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
 import FavouriteMoviesCard from '../views/favouriteMovies/FavouriteMoviesCard';
-import MovieCard from '../components/movie-card/MovieCard';
-import { favouriteIds } from '../utility/testing/MockData';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // Test suite configuration
 setupTestConfiguration();
+const queryClient = new QueryClient();
 
-describe('FavouriteMoviesCard', () => {
+describe('Favourite Movies Card', () => {
   // Suite setup
   let wrapper;
 
   it('should be rendered.', async () => {
     // Arrange & Act
-    wrapper = shallow(<FavouriteMoviesCard />);
+    wrapper = shallow(
+      <QueryClientProvider client={queryClient}>
+        <FavouriteMoviesCard />
+      </QueryClientProvider>
+    );
     // Assert
     expect(wrapper).toBeDefined();
   });

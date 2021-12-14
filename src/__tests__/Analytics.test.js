@@ -3,18 +3,18 @@ import {
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
-import FavouritesButton from '../components/movie-details/FavouritesButton';
+import Analytics from '../views/analytics/Analytics';
 
 // Test suite configuration
 setupTestConfiguration();
 
-describe('Favourites Button', () => {
+describe('Analytics route', () => {
   // Suite setup
   let wrapper;
 
   it('should be rendered.', async () => {
     // Arrange & Act
-    wrapper = shallow(<FavouritesButton />);
+    wrapper = shallow(<Analytics />);
     // Assert
     expect(wrapper).toBeDefined();
   });

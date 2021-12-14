@@ -1,13 +1,12 @@
 // Own
-import { shallow } from 'enzyme';
 import { Provider } from 'react-redux';
 import { store } from '../redux/storeConfig/store';
 import FeaturedMovies from '../views/featuredMovies/FeaturedMovies';
-import { setupTestConfiguration } from '../utility/testing/TestConfiguration';
+import { setupTestConfiguration, shallow } from '../utility/testing/TestConfiguration';
 
 setupTestConfiguration();
 
-describe('FeaturedMovies', () => {
+describe('Featured Movies route', () => {
   // Suite setup
   let wrapper;
 

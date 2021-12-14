@@ -12,7 +12,7 @@ import Rating from './Rating';
 import Heart from './Heart';
 import '../movie-card/movies.scss';
 
-const MovieCard = ({ movieData, isFavourite }) => {
+const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
 
   const [filled, setFilled] = useState(isFavourite);
   const id = movieData?.id;
@@ -56,7 +56,7 @@ const MovieCard = ({ movieData, isFavourite }) => {
       </div>
       <div className='movie__imdb'>
         <Rating rating={score?.toFixed(1)} />
-        <Heart movieId={movieData?.id} filled={filled} setFilled={setFilled} />
+        <Heart movieId={movieData?.id} filled={filled} setFilled={setFilled} updateFavourites={updateFavourites} />
       </div>
     </div>
   );

@@ -4,26 +4,27 @@ import {
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
-import MovieRating from '../components/movie-details/MovieRating';
+import Chart from '../components/chart/Chart';
 
 // Test suite configuration
 setupTestConfiguration();
 
-describe('Movie Rating', () => {
+describe('Chart', () => {
   // Suite setup
   let wrapper;
 
   it('should be rendered.', async () => {
     // Arrange & Act
-    wrapper = shallow(<MovieRating />);
+    wrapper = shallow(<Chart chartId={'61b1bacc-87e0-46bb-8f20-7b6cd13aef3d'} />);
     // Assert
     expect(wrapper).toBeDefined();
   });
 
   it('should be rendered with props.', async () => {
     // Arrange & Act
-    wrapper = mount(<MovieRating rating={5.5} />);
+    wrapper = mount(<Chart chartId={'61b1bacc-87e0-46bb-8f20-7b6cd13aef3d'} height={300} />);
     // Assert
-    expect(wrapper.props().rating).toEqual(5.5);
+    expect(wrapper.props().chartId).toEqual('61b1bacc-87e0-46bb-8f20-7b6cd13aef3d');
+    expect(wrapper.props().height).toEqual(300);
   });
 });

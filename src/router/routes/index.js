@@ -18,10 +18,6 @@ const Routes = [
     component: lazy(() => import('../../views/searchMovies/SearchMovies').then(({ default: SearchMovies }) => ({ default: SearchMovies }))),
   },
   {
-    path: '/profile',
-    component: lazy(() => import('../../views/profile/Profile').then(({ default: Profile }) => ({ default: Profile }))),
-  },
-  {
     path: '/favourites',
     component:lazy(() => import('../../views/favouriteMovies/FavouriteMovies').then(({ default: FavouriteMovies }) => ({ default: FavouriteMovies }))),
   },
@@ -32,6 +28,10 @@ const Routes = [
   {
     path: '/personDetails/:id',
     component: lazy(() => import('../../views/PersonDetails/PersonDetails').then(({ default: PersonDetails }) => ({ default: PersonDetails }))),
+  },
+  {
+    path: '/analytics',
+    component: lazy(() => import('../../views/analytics/Analytics').then(({ default: Analytics }) => ({ default: Analytics }))),
   },
   {
     path: '/register',

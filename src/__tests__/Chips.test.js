@@ -2,13 +2,13 @@
 import { act } from 'react-dom/test-utils';
 
 // Own
-import Chips from '../components/chips/Chips';
 import {
   mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
 import { genres, searchGenres, toggledChips } from '../utility/testing/MockData';
+import Chips from '../components/chips/Chips';
 
 // Test suite configuration
 setupTestConfiguration();

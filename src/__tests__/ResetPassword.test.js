@@ -7,7 +7,7 @@ import {
 // Test suite configuration
 setupTestConfiguration();
 
-describe('Reset Password', () => {
+describe('Reset Password route', () => {
   // Suite setup
   let wrapper;
 

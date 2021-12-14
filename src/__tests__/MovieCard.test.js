@@ -8,7 +8,7 @@ import MovieCard from '../components/movie-card/MovieCard';
 // Test suite configuration
 setupTestConfiguration();
 
-describe('MovieCard', () => {
+describe('Movie Card', () => {
   // Suite setup
   let wrapper;
   it('should be rendered.', async () => {

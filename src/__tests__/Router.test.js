@@ -1,9 +1,9 @@
 // Own
-import Router from '../router/Router';
 import {
   shallow,
   setupTestConfiguration
 } from '../utility/testing/TestConfiguration';
+import Router from '../router/Router';
 
 setupTestConfiguration();
 

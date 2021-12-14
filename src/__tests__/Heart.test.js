@@ -1,15 +1,15 @@
 // Own
-import Heart from '../components/movie-card/Heart';
 import {
   mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import Heart from '../components/movie-card/Heart';
 
 // Test suite configuration
 setupTestConfiguration();
 
-describe('Heart', () => {
+describe('Heart button', () => {
   // Suite setup
   let wrapper;
 

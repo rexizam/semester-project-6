@@ -1,10 +1,10 @@
 // Own
-import Profiles from '../components/movie-details/Profiles';
 import {
   mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import Profiles from '../components/movie-details/Profiles';
 
 // Test suite configuration
 setupTestConfiguration();

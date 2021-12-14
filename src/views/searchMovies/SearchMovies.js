@@ -16,10 +16,23 @@ const SearchMovies = () => {
   const [searchString, setSearchString] = useState(localStorage.getItem('searchString') || '');
   const [searchGenres, setSearchGenres] = useState(JSON.parse(localStorage.getItem('searchGenres')) || []);
   const [rSelected, setRSelected] = useState(localStorage.getItem('searchType') || 'movieName');
+  const [favourites, updateFavourites] = useState(0);
 
   const dispatch = useDispatch();
   const genresStore = useSelector(state => state.genresReducer.genres);
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
+
+  const debouncedSearchStringReset = () => {
+    setTimeout(() => {
+      setSearchString('');
+    }, 500);
+  }
+
+  const debouncedSearchGenresReset = () => {
+    setTimeout(() => {
+      setSearchGenres([]);
+    }, 500);
+  }
 
   useEffect(() => {
     dispatch(getGenres());
@@ -27,16 +40,19 @@ const SearchMovies = () => {
 
   useEffect(() => {
     if (rSelected === 'movieName') {
-      setSearchGenres([]);
+      debouncedSearchGenresReset();
     }
     if (rSelected === 'movieGenre') {
-      setSearchString('');
+      debouncedSearchStringReset();
     }
     localStorage.setItem('searchType', rSelected);
   }, [rSelected])
 
   useEffect(() => {
     dispatch(getFavouriteMovieIds());
+  }, [favourites])
+
+  useEffect(() => {
     localStorage.setItem('searchString', searchString.trim());
     localStorage.setItem('searchGenres', JSON.stringify((searchGenres)));
   }, [searchString, searchGenres]);
@@ -97,7 +113,7 @@ const SearchMovies = () => {
         isFetching={isFetchingNextPage}
         fetchItems={fetchNextPage}
       >
-        {(movie) => <MovieCard movieData={movie} isFavourite={favouritesStore?.favouriteMovieIds?.includes(movie.id)} />}
+        {(movie) => <MovieCard movieData={movie} isFavourite={favouritesStore?.favouriteMovieIds?.includes(movie.id)} updateFavourites={updateFavourites} />}
       </InfiniteMovieList>
     </>
   );

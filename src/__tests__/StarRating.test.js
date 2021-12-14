@@ -1,14 +1,14 @@
 // Own
-import StarRating from '../components/star-rating/StarRating';
 import {
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import StarRating from '../components/star-rating/StarRating';
 
 // Test suite configuration
 setupTestConfiguration();
 
-describe('MovieRecommendations', () => {
+describe('Star Rating', () => {
   // Suite setup
   let wrapper;
 

@@ -1,10 +1,10 @@
 // Own
-import Rating from '../components/movie-card/Rating';
 import {
   mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import Rating from '../components/movie-card/Rating';
 
 // Test suite configuration
 setupTestConfiguration();

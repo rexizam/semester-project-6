@@ -4,7 +4,7 @@ import { Cell, Provider as GridProvider, Row } from 'griding';
 import * as GridConfig from '../../configs/gridConfig';
 import React from 'react';
 import MovieCard from '../movie-card/MovieCard';
-import { CardHeader, CardTitle } from 'reactstrap';
+import { CardTitle } from 'reactstrap';
 
 const MovieRecommendations = ({ id, favourites }) => {
 
@@ -14,19 +14,19 @@ const MovieRecommendations = ({ id, favourites }) => {
   return (
     <>
       {result?.results?.length > 0 && (
-        <CardHeader>
-          <CardTitle className={'font-large-1 text-center'} style={{textDecoration: 'underline'}}>Recommended Movies</CardTitle>
-        </CardHeader>
+        <>
+          <CardTitle className={'font-large-1 text-center mt-5 mb-3'} style={{textDecoration: 'underline'}}>Recommended Movies</CardTitle>
+          <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
+            <Row vertical-gutter style={{ marginBottom: '2rem', marginTop: '2rem', justifyContent: 'space-around' }}>
+              {result?.results?.map(movie => (
+                <Cell key={movie.id} xs={6} sm={4} md={3} xg={2}>
+                  <MovieCard movieData={movie} isFavourite={favourites?.includes(movie.id)} />
+                </Cell>
+              ))}
+            </Row>
+          </GridProvider>
+        </>
       )}
-      <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
-        <Row vertical-gutter style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
-          {result?.results?.map(movie => (
-            <Cell key={movie.id} xs={6} sm={4} md={3} xg={2}>
-              <MovieCard movieData={movie} isFavourite={favourites?.includes(movie.id)} />
-            </Cell>
-          ))}
-        </Row>
-      </GridProvider>
     </>
   );
 }

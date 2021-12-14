@@ -9,11 +9,11 @@ const FavouritesButton = ({ movieId, favourites }) => {
   const realmService = getRealmService();
 
   const handleMouseEnter = () => {
-    setColor('#FF4040');
+    setColor(filled ? '#ddd' : '#FF4040');
   };
 
   const handleMouseLeave = () => {
-    setColor('#ddd');
+    setColor(filled ? '#FF4040' : '#ddd');
   };
 
   const handleClick = async () => {
@@ -33,7 +33,9 @@ const FavouritesButton = ({ movieId, favourites }) => {
   }
 
   useEffect(() => {
-    setFilled(favourites?.includes(movieId));
+    const isFavourite = favourites?.includes(movieId);
+    setFilled(isFavourite);
+    setColor(isFavourite ? '#FF4040' : '#ddd');
   }, [favourites])
 
   return (

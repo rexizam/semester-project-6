@@ -7,7 +7,7 @@ import {
 // Test suite configuration
 setupTestConfiguration();
 
-describe('Register', () => {
+describe('Register route', () => {
   // Suite setup
   let wrapper;
 

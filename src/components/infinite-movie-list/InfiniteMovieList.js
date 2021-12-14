@@ -71,7 +71,7 @@ const InfiniteMovieList = (
                 return !hasMore || allItemsLoaded;
               }}
               loadMoreRows={loadMoreRows}
-              minimumBatchSize={20}
+              minimumBatchSize={16}
               threshold={20}
             >
               {({ onRowsRendered, registerChild }) => (

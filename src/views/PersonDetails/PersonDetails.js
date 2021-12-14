@@ -91,9 +91,7 @@ const PersonDetails = () => {
       </Row>
       {actedOn?.length > 0 && (
         <div>
-          <CardHeader>
-            <CardTitle className={'font-large-1 text-center mt-2'} style={{textDecoration: 'underline'}}>Acted On</CardTitle>
-          </CardHeader>
+          <CardTitle className={'font-large-1 text-center mt-5 mb-3'} style={{textDecoration: 'underline'}}>Acted On</CardTitle>
           <GridProvider columns={GridConfig.columns} breakpoints={GridConfig.breakpoints}>
             <Row style={{ marginBottom: '2rem', justifyContent: 'space-around' }}>
               {actedOn?.map(movie => (

@@ -3,7 +3,7 @@ import { api, base } from '../../network/Constants';
 import InfiniteMovieList from '../../components/infinite-movie-list/InfiniteMovieList';
 import MovieCard from '../../components/movie-card/MovieCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getFavouriteMovieIds } from '../../redux/actions/favouriteMoviesIds';
 import { throwCommonError } from '../../utility/Utils';
 
@@ -17,10 +17,11 @@ const PopularMovies = () => {
    */
   const dispatch = useDispatch();
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
+  const [favourites, updateFavourites] = useState(0);
 
   useEffect(() => {
     dispatch(getFavouriteMovieIds());
-  }, []);
+  }, [favourites]);
 
   const getPopularMovies = async (pageParam) => {
     const pageParameter = `&page=${pageParam}`;
@@ -57,7 +58,7 @@ const PopularMovies = () => {
       isFetching={isFetchingNextPage}
       fetchItems={fetchNextPage}
     >
-      {(movie) => <MovieCard movieData={movie} isFavourite={favouritesStore?.favouriteMovieIds?.includes(movie.id)} />}
+      {(movie) => <MovieCard movieData={movie} isFavourite={favouritesStore?.favouriteMovieIds?.includes(movie.id)} updateFavourites={updateFavourites} />}
     </InfiniteMovieList>
   );
 }

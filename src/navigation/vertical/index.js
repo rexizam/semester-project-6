@@ -1,4 +1,4 @@
-import { Film, TrendingUp, Search, Star } from 'react-feather';
+import { Film, TrendingUp, Search, BarChart2 } from 'react-feather';
 
 export default [
   {
@@ -12,6 +12,12 @@ export default [
     title: 'Popular',
     icon: <TrendingUp size={20} />,
     navLink: '/popular-movies'
+  },
+  {
+    id: 'analytics',
+    title: 'Analytics',
+    icon: <BarChart2 size={20} />,
+    navLink: '/analytics'
   },
   {
     id: 'search',

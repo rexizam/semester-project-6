@@ -8,12 +8,9 @@ import Avatar from 'react-avatar';
 // ** Utils
 import { getRandomColor } from '../../../components/avatar/AvatarUtils';
 
-// ** Store & Actions
-import { useDispatch } from 'react-redux';
-
 // ** Third Party Components
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap';
-import { User, Power, Heart } from 'react-feather';
+import { Power, Heart } from 'react-feather';
 
 // ** Realm-Web
 import { getRealmService } from '../../../../realm-cli';
@@ -45,10 +42,6 @@ const UserDropdown = () => {
     }
   }, []);
 
-  const toProfilePage = () => {
-    history.push('/profile');
-  }
-
   const toFavouritesPage = () => {
     history.push('/favourites');
   }
@@ -74,10 +67,6 @@ const UserDropdown = () => {
         />
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem tag={Link} to='/profile' onClick={() => toProfilePage()}>
-          <User size={14} className='mr-75' />
-          <span className='align-middle'>Profile</span>
-        </DropdownItem>
         <DropdownItem tag={Link} to='/favourites' onClick={() => toFavouritesPage()}>
           <Heart size={14} className='mr-75' />
           <span className='align-middle'>Favourites</span>

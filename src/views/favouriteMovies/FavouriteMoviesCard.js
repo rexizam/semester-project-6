@@ -1,24 +1,30 @@
 // React
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import axios from 'axios';
+// 3rd party
+import { useQuery } from 'react-query';
 
 // Own
 import { api, base } from '../../network/Constants';
 import MovieCard from '../../components/movie-card/MovieCard';
 import '../../components/movie-card/movies.scss';
+import { throwCommonError } from '../../utility/Utils';
 
 const FavouriteMoviesCard = ({ favouriteMovieId, isFavourite }) => {
 
-  const [favouriteMovie, setFavouriteMovie] = useState({});
+  const getMovie = async (movieId) => {
+    const url = ([`${base}/movie/${movieId}?api_key=${api}`]).join('');
+    const response = await fetch(url);
+    const data = await response.json();
 
-  const getMovie = async (favouriteMovieId) => {
-    return await axios.get(`${base}/movie/${favouriteMovieId}?api_key=${api}`);
-  };
+    if (!response.ok) {
+      throwCommonError(data);
+    }
 
-  useEffect(() => {
-    getMovie(favouriteMovieId).then((response) => { setFavouriteMovie(response.data) });
-  }, []);
+    return data;
+  }
+
+  const { data: favouriteMovie } = useQuery(['movieDetails', favouriteMovieId], () => getMovie(favouriteMovieId));
 
   return (<MovieCard movieData={favouriteMovie} isFavourite={isFavourite} />);
 };

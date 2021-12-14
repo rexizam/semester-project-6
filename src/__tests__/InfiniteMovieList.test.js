@@ -1,15 +1,15 @@
 // Own
-import InfiniteMovieList from '../components/infinite-movie-list/InfiniteMovieList';
 import {
   mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import InfiniteMovieList from '../components/infinite-movie-list/InfiniteMovieList';
 
 // Test suite configuration
 setupTestConfiguration();
 
-describe('InfiniteMovieList', () => {
+describe('Infinite Movie List', () => {
   // Suite setup
   let wrapper;
 

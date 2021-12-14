@@ -1,15 +1,15 @@
 // Own
-import MovieRecommendations from '../components/movie-recommendations/MovieRecommendations';
 import {
   mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import MovieRecommendations from '../components/movie-recommendations/MovieRecommendations';
 
 // Test suite configuration
 setupTestConfiguration();
 
-describe('MovieRecommendations', () => {
+describe('Movie Recommendations', () => {
   // Suite setup
   let wrapper;
 

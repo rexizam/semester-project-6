@@ -4,31 +4,40 @@ import React, { useState } from 'react';
 // Own
 import { getRealmService } from '../../realm-cli';
 
-const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId }) => {
+const Heart = ({ size = 24, filled, setFilled, strokeWidth = '2', movieId, updateFavourites }) => {
 
-  const [color, setColor] = useState('#ddd');
+  const [color, setColor] = useState(filled ? '#FF4040' : '#ddd');
   const realmService = getRealmService();
 
   const handleMouseEnter = () => {
-    setColor('#FF4040');
+    setColor(filled ? '#ddd' : '#FF4040');
   };
 
   const handleMouseLeave = () => {
-    setColor('#ddd');
+    setColor(filled ? '#FF4040' : '#ddd');
   };
 
   const updateFavouriteMovies = async () => {
     const favourites = await realmService.currentUser.functions.callFunction('getFavouriteMovies');
     if (favourites === null) {
       await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', [movieId]).then(setFilled(!filled));
+      if (updateFavourites) {
+        updateFavourites(movieId);
+      }
     } else {
       const updated = favourites;
       if (!updated.includes(movieId)) {
         updated.push(movieId);
         await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', updated).then(setFilled(!filled));
+        if (updateFavourites) {
+          updateFavourites(movieId);
+        }
       } else if (updated.includes(movieId)) {
         const filteredFavourites = updated.filter(item => item !== movieId);
         await realmService.currentUser.functions.callFunction('addOrRemoveFavourites', filteredFavourites).then(setFilled(!filled));
+        if (updateFavourites) {
+          updateFavourites(movieId);
+        }
       }
     }
   };

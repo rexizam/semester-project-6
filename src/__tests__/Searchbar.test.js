@@ -1,10 +1,10 @@
 // Own
-import Searchbar from '../components/search-bar/Searchbar';
 import {
   mount,
   shallow,
   setupTestConfiguration,
 } from '../utility/testing/TestConfiguration';
+import Searchbar from '../components/search-bar/Searchbar';
 
 // Test suite configuration
 setupTestConfiguration();

@@ -3,7 +3,6 @@ import {
   shallow,
   setupTestConfiguration
 } from '../utility/testing/TestConfiguration';
-import App from '../App';
 
 setupTestConfiguration();
 /**
