@@ -24,14 +24,19 @@ const MovieDetails = () => {
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
   const ratedMoviesStore = useSelector(state => state.ratedMoviesReducer.ratedMovies);
 
+  const budget = result?.budget;
   const title = result?.title;
   const image = result?.poster_path;
   const score = result?.vote_average;
   const description = result?.overview;
   const genres = result?.genres?.map(x => x.name) || [];
+  const language = result?.original_language;
+  const productionCountries = result?.production_countries;
+  const revenue = result?.revenue;
+  const voteCount = result?.vote_count;
   const rating = result?.release_dates?.results?.find(x => x.iso_3166_1 === 'US')?.release_dates[0]?.certification || null;
   const releaseDate = result?.release_date?.split('-')[0];
-  const runTime = `${result?.runtime} min`;
+  const runTime = result?.runtime;
   const actors = result?.credits?.cast;
   const directors = result?.credits?.crew?.filter(x => x.department === 'Directing');
 
@@ -46,6 +51,11 @@ const MovieDetails = () => {
     dispatch(getRatedMovies());
     window.scrollTo(0, 0);
   }, [params.id])
+
+  const numberWithCommas = (x) => {
+    //x.toLocaleString()
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
 
   return (
     <Fragment>
@@ -98,7 +108,17 @@ const MovieDetails = () => {
                   </Col>
                 )}
               </Row>
-              <Row>
+              {!!voteCount && (
+                <Row className={'mb-1'}>
+                  <Col lg={12} md={12} sm={12} xs={12}>
+                    <Badge color={'light-secondary'}
+                           className={'d-flex justify-content-center align-items-center w-100 h-100 font-medium-1'}>
+                      {`${numberWithCommas(voteCount)} votes`}
+                    </Badge>
+                  </Col>
+                </Row>
+              )}
+              <Row className={'mb-1'}>
                 {releaseDate && (
                   <Col lg={6} md={6} sm={6} xs={6}>
                     <Badge color={'light-secondary'}
@@ -107,11 +127,11 @@ const MovieDetails = () => {
                     </Badge>
                   </Col>
                 )}
-                {runTime !== '0 min' && (
+                {!!runTime && (
                   <Col lg={6} md={6} sm={6} xs={6}>
                     <Badge color={'light-secondary'}
                            className={'d-flex justify-content-center align-items-center w-100 h-100 font-medium-1'}>
-                      {runTime}
+                      {`${runTime} min`}
                     </Badge>
                   </Col>
                 )}
@@ -126,6 +146,47 @@ const MovieDetails = () => {
                   </Col>
                 </Row>
               ))}
+              {language && (
+                <Card>
+                  <CardBody className='profile-suggestion'>
+                    <h5 className='mb-2 text-center'>Language</h5>
+                    <Badge color={'light-primary'}
+                           className={'d-flex justify-content-center align-items-center w-100 h-100 font-medium-1'}>
+                      {language.toUpperCase()}
+                    </Badge>
+                  </CardBody>
+                </Card>
+              )}
+              {!!budget && (
+                <Card>
+                  <CardBody className='profile-suggestion'>
+                    <h5 className='mb-2 text-center'>Budget</h5>
+                    <div className={'text-center font-medium-2'}>{numberWithCommas(budget)}</div>
+                  </CardBody>
+                </Card>
+              )}
+              {!!revenue && (
+                <Card>
+                  <CardBody className='profile-suggestion'>
+                    <h5 className='mb-2 text-center'>Revenue</h5>
+                    <div className={'text-center font-medium-2'}>{numberWithCommas(revenue)}</div>
+                  </CardBody>
+                </Card>
+              )}
+              {productionCountries?.length > 0 && (
+                <Card>
+                  <CardBody className='profile-suggestion'>
+                    <h5 className='mb-2 text-center'>Production Countries</h5>
+                    {productionCountries.map((element, index) => (
+                      <Badge key={index}
+                             color={'light-primary'}
+                             className={'d-flex justify-content-center align-items-center w-100 h-100 font-medium-1 mb-1'}>
+                        {element.iso_3166_1}
+                      </Badge>
+                    ))}
+                  </CardBody>
+                </Card>
+              )}
               <Profiles data={directors} profileType={'Directors'} />
             </Col>
             <Col lg={3} md={6} sm={12} xs={12} className={'d-none d-lg-none d-md-block d-sm-block'}>
