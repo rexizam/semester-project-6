@@ -161,7 +161,10 @@ const MovieDetails = () => {
                 <Card>
                   <CardBody className='profile-suggestion'>
                     <h5 className='mb-2 text-center'>Budget</h5>
-                    <div className={'text-center font-medium-2'}>{numberWithCommas(budget)}</div>
+                    <Badge color={'light-secondary'}
+                           className={'d-flex justify-content-center align-items-center w-100 h-100 font-medium-1'}>
+                      {`${numberWithCommas(budget)} $`}
+                    </Badge>
                   </CardBody>
                 </Card>
               )}
@@ -169,7 +172,10 @@ const MovieDetails = () => {
                 <Card>
                   <CardBody className='profile-suggestion'>
                     <h5 className='mb-2 text-center'>Revenue</h5>
-                    <div className={'text-center font-medium-2'}>{numberWithCommas(revenue)}</div>
+                    <Badge color={'light-secondary'}
+                           className={'d-flex justify-content-center align-items-center w-100 h-100 font-medium-1'}>
+                      {`${numberWithCommas(revenue)} $`}
+                    </Badge>
                   </CardBody>
                 </Card>
               )}
