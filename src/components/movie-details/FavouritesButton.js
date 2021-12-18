@@ -36,7 +36,7 @@ const FavouritesButton = ({ movieId, favourites }) => {
     const isFavourite = favourites?.includes(movieId);
     setFilled(isFavourite);
     setColor(isFavourite ? '#FF4040' : '#ddd');
-  }, [favourites])
+  }, [movieId, favourites])
 
   return (
     <Button.Ripple
