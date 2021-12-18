@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Reflector, useTexture, useGLTF, Loader } from '@react-three/drei';
 import couch from '../../assets/3d-models/couch.glb';
@@ -15,8 +15,14 @@ import { sRGBEncoding, Vector3 } from 'three';
  */
 
 const IntroScene = React.memo(props => {
+
   const Model = (props) => {
-    const { scene } = useGLTF(couch)
+    const { scene, nodes } = useGLTF(couch);
+
+    useMemo(() => Object.values(nodes).forEach(obj => obj.isMesh && Object.assign(obj, { castShadow: true, receiveShadow: true })),
+      [nodes]
+    );
+
     return <primitive object={scene} {...props} />
   }
 
@@ -37,8 +43,19 @@ const IntroScene = React.memo(props => {
   const Ground = () => {
     const [floor, normal] = useTexture([floorTexture, floorTextureNormal])
     return (
-      <Reflector resolution={512} args={[10, 10]} mirror={0.4} mixBlur={8} mixStrength={1} rotation={[-Math.PI / 2, 0, Math.PI / 2]} blur={[400, 100]}>
-        {(Material, props) => <Material color={'#a0a0a0'} metalness={0.4} roughnessMap={floor} normalMap={normal} normalScale={[1, 1]} {...props} />}
+      <Reflector
+        receiveShadow
+        resolution={512}
+        args={[10, 10]}
+        mirror={0.4}
+        mixBlur={8}
+        mixStrength={1}
+        rotation={[-Math.PI / 2, 0, Math.PI / 2]}
+        blur={[400, 100]}
+      >
+        {(Material, props) => (
+          <Material color={'#a0a0a0'} metalness={0.4} roughnessMap={floor} normalMap={normal} normalScale={[1, 1]} {...props} />
+        )}
       </Reflector>
     )
   }
@@ -53,7 +70,7 @@ const IntroScene = React.memo(props => {
 
   return (
     <>
-      <Canvas concurrent gl={{ alpha: false }} pixelRatio={[1, 1.5]} camera={{ position: [0, 3, 100], fov: 15 }}>
+      <Canvas shadows concurrent gl={{ alpha: false }} pixelRatio={[1, 1.5]} camera={{ position: [0, 3, 100], fov: 15 }}>
         <color attach="background" args={['black']} />
         <fog attach="fog" args={['black', 15, 20]} />
         <Suspense fallback={null}>
@@ -63,7 +80,8 @@ const IntroScene = React.memo(props => {
             <Ground />
           </group>
           <ambientLight intensity={0.5} />
-          <spotLight position={[0, 10, 0]} intensity={0.3} />
+          <spotLight position={[0, 10, 0]} intensity={0.3} color={'#deb98c'} />
+          <pointLight castShadow={true} position={[0, 0, 0]} intensity={0.3} color={'#deb98c'} />
           <directionalLight position={[-20, 0, -10]} intensity={0.7} />
           <CameraControls />
         </Suspense>
