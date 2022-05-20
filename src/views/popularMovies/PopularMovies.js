@@ -25,7 +25,7 @@ const PopularMovies = () => {
 
   const getPopularMovies = async (pageParam) => {
     const pageParameter = `&page=${pageParam}`;
-    const url = ([`${base}/discover/movie?sort_by=popularity.desc`, `&api_key=${api}`, pageParameter]).join('');
+    const url = ([`${base}/discover/movie?sort_by=vote_count.desc`, `&api_key=${api}`, pageParameter]).join('');
     const response = await fetch(url);
     const data = await response.json();
 
