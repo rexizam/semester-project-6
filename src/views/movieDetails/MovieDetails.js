@@ -20,15 +20,15 @@ const MovieDetails = () => {
   const url = ([`${base}/movie/${params.id}`, `?api_key=${api}`, responseConfigParameter]).join('');
   const { pending, error, result, abort } = useFetch(url);
 
+  const dispatch = useDispatch();
+  const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
+  const ratedMoviesStore = useSelector(state => state.ratedMoviesReducer.ratedMovies);
+
   const RETRY_COUNT = 5;
   const RETRY_DELAY = 1000;
 
   const componentRef = useRef();
   const [imgError, setImgError] = useState(false);
-
-  const dispatch = useDispatch();
-  const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
-  const ratedMoviesStore = useSelector(state => state.ratedMoviesReducer.ratedMovies);
 
   const budget = result?.budget;
   const title = result?.title;
@@ -61,10 +61,6 @@ const MovieDetails = () => {
         componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
       }, RETRY_DELAY);
     }
-  }, []);
-
-  const handleLoad = useCallback(() => {
-    setImgError(false);
   }, []);
 
   const handleClick = () => {

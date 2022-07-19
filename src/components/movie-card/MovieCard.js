@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // 3rd party
 import { Film } from 'react-feather';
@@ -13,6 +13,12 @@ import Heart from './Heart';
 import '../movie-card/movies.scss';
 
 const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
+
+  const RETRY_COUNT = 5;
+  const RETRY_DELAY = 1000;
+
+  const componentRef = useRef();
+  const [imgError, setImgError] = useState(false);
 
   const [filled, setFilled] = useState(isFavourite);
   const id = movieData?.id;
@@ -36,6 +42,21 @@ const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
     setFilled(isFavourite);
   }, [isFavourite])
 
+  useEffect(() => {
+    componentRef.current = RETRY_COUNT;
+  }, []);
+
+  const handleError = useCallback(({ currentTarget }) => {
+    setImgError(true);
+    if (componentRef && componentRef.current && componentRef.current > 0) {
+      setTimeout(() => {
+        currentTarget.onerror = null;
+        currentTarget.src = image && `https://image.tmdb.org/t/p/w300/${image}`;
+        componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
+      }, RETRY_DELAY);
+    }
+  }, []);
+
   return (
     <div className='movie'>
       <div className={'overlay'} />
@@ -44,6 +65,7 @@ const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
         <ProgressiveImage
           src={`https://image.tmdb.org/t/p/w300/${image}`}
           placeholder={`https://image.tmdb.org/t/p/w45/${image}`}
+          onError={handleError}
         >
           {src => <img className={'img'} src={src} alt={''} />}
         </ProgressiveImage>
