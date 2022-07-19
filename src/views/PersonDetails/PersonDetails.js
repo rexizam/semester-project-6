@@ -36,6 +36,15 @@ const PersonDetails = () => {
 
   const history = useHistory();
 
+  const handleClick = () => {
+    history.goBack();
+  };
+
+  useEffect(() => {
+    dispatch(getFavouriteMovieIds());
+    window.scrollTo(0, 0);
+  }, [params.id])
+
   useEffect(() => {
     componentRef.current = RETRY_COUNT;
   }, []);
@@ -50,15 +59,6 @@ const PersonDetails = () => {
       }, RETRY_DELAY);
     }
   }, []);
-
-  const handleClick = () => {
-    history.goBack();
-  };
-
-  useEffect(() => {
-    dispatch(getFavouriteMovieIds());
-    window.scrollTo(0, 0);
-  }, [params.id])
 
   return (
     <Fragment>
@@ -101,7 +101,7 @@ const PersonDetails = () => {
           </Card>
         </Col>
         <Col lg={4} md={12} sm={12} xs={12}>
-          {!pending && (
+          {image && (
             <ProgressiveImage
               delay={1000}
               src={image && `https://image.tmdb.org/t/p/original/${image}`}
@@ -111,7 +111,7 @@ const PersonDetails = () => {
               {src => <img src={src} alt={''} className={'d-block mx-auto img-fluid w-100'} style={{ filter: pending ? 'blur(2rem)' : 'none' }} />}
             </ProgressiveImage>
           )}
-          {!pending && !image && (<img src={placeholder} alt={''} className={'d-block mx-auto img-fluid w-100'} />)}
+          {!image && (<img src={placeholder} alt={''} className={'d-block mx-auto img-fluid w-100'} />)}
         </Col>
       </Row>
       {actedOn?.length > 0 && (

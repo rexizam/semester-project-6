@@ -48,6 +48,16 @@ const MovieDetails = () => {
 
   const history = useHistory();
 
+  const handleClick = () => {
+    history.goBack();
+  };
+
+  useEffect(() => {
+    dispatch(getFavouriteMovieIds());
+    dispatch(getRatedMovies());
+    window.scrollTo(0, 0);
+  }, [params.id])
+
   useEffect(() => {
     componentRef.current = RETRY_COUNT;
   }, []);
@@ -62,16 +72,6 @@ const MovieDetails = () => {
       }, RETRY_DELAY);
     }
   }, []);
-
-  const handleClick = () => {
-    history.goBack();
-  };
-
-  useEffect(() => {
-    dispatch(getFavouriteMovieIds());
-    dispatch(getRatedMovies());
-    window.scrollTo(0, 0);
-  }, [params.id])
 
   const numberWithCommas = (x) => {
     //x.toLocaleString()
@@ -92,7 +92,7 @@ const MovieDetails = () => {
                   <CardTitle className={'m-auto font-large-1'}>{title}</CardTitle>
                 </CardHeader>
                 <CardBody>
-                  {!pending && (
+                  {image && (
                     <ProgressiveImage
                       delay={1000}
                       src={image && `https://image.tmdb.org/t/p/original/${image}`}
@@ -103,7 +103,7 @@ const MovieDetails = () => {
                                    style={{ filter: pending ? 'blur(2rem)' : 'none' }} />}
                     </ProgressiveImage>
                   )}
-                  {!pending && !image && (<Film size={500} className={'d-block mx-auto img-fluid w-100'} />)}
+                  {!image && (<Film size={500} className={'d-block mx-auto img-fluid w-100'} />)}
                   <CardText className={'mt-2 font-weight-bolder font-medium-3'}>Plot</CardText>
                   <CardText className={'font-medium-2'}>{description}</CardText>
                 </CardBody>
