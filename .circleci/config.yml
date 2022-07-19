@@ -24,12 +24,12 @@ jobs:
       - run:
           name: build
           command: |
-              touch .env
-              echo "REACT_APP_REALM_APP_ID" > .env
-              echo "REACT_APP_MONGO_CLIENT" > .env
-              echo "REACT_APP_MONGODB_DB_NAME" > .env
-              echo "REACT_APP_TMDB_KEY" > .env
-              npm run build
+            touch .env
+            echo "REACT_APP_REALM_APP_ID" > .env
+            echo "REACT_APP_MONGO_CLIENT" > .env
+            echo "REACT_APP_MONGODB_DB_NAME" > .env
+            echo "REACT_APP_TMDB_KEY" > .env
+            npm run build
 
       - save_cache:
           paths:
@@ -47,6 +47,8 @@ jobs:
 
       - codecov/upload:
           file: './coverage/clover.xml'
+    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
+    resource_class: large
 
   deploy-job:
     docker:
@@ -55,7 +57,8 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{
+              .Environment.CIRCLE_SHA1 }}
       - run:
           name: show directory
           command: pwd
