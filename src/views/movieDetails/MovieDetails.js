@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { api, base, responseConfigParameter } from '../../network/Constants';
 import { useFetch } from 'react-hooks-async';
 import Profiles from '../../components/movie-details/Profiles';
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import ProgressiveImage from 'react-progressive-graceful-image';
 import MovieRating from '../../components/movie-details/MovieRating';
 import { ArrowLeft, Film } from 'react-feather';
@@ -24,12 +24,6 @@ const MovieDetails = () => {
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
   const ratedMoviesStore = useSelector(state => state.ratedMoviesReducer.ratedMovies);
 
-  const RETRY_COUNT = 5;
-  const RETRY_DELAY = 1000;
-
-  const componentRef = useRef();
-  const [imgError, setImgError] = useState(false);
-
   const budget = result?.budget;
   const title = result?.title;
   const image = result?.poster_path;
@@ -47,21 +41,6 @@ const MovieDetails = () => {
   const directors = result?.credits?.crew?.filter(x => x.department === 'Directing');
 
   const history = useHistory();
-
-  useEffect(() => {
-    componentRef.current = RETRY_COUNT;
-  }, []);
-
-  const handleError = useCallback(({ currentTarget }) => {
-    setImgError(true);
-    if (componentRef && componentRef.current && componentRef.current > 0) {
-      setTimeout(() => {
-        currentTarget.onerror = null;
-        currentTarget.src = image && `https://image.tmdb.org/t/p/original/${image}`;
-        componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
-      }, RETRY_DELAY);
-    }
-  }, []);
 
   const handleClick = () => {
     history.goBack();
@@ -95,7 +74,7 @@ const MovieDetails = () => {
                   <ProgressiveImage
                     src={image && `https://image.tmdb.org/t/p/original/${image}`}
                     placeholder={image && `https://image.tmdb.org/t/p/w92/${image}`}
-                    onError={handleError}
+                    delay={1000}
                   >
                     {src => <img src={src} alt={''} className={'d-block mx-auto img-fluid w-100'}
                                  style={{ filter: pending ? 'blur(2rem)' : 'none' }} />}
