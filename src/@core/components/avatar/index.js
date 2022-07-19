@@ -1,10 +1,13 @@
 // ** React Imports
-import { forwardRef } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 
 // ** Third Party Components
 import Proptypes from 'prop-types';
 import { Badge } from 'reactstrap';
 import classnames from 'classnames';
+
+const RETRY_COUNT = 5;
+const RETRY_DELAY = 1000;
 
 const Avatar = forwardRef((props, ref) => {
   // ** Props
@@ -27,6 +30,28 @@ const Avatar = forwardRef((props, ref) => {
     contentStyles,
     ...rest
   } = props;
+
+  const componentRef = useRef();
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    componentRef.current = RETRY_COUNT;
+  }, []);
+
+  const handleError = useCallback(({ currentTarget }) => {
+    setError(true);
+    if (componentRef && componentRef.current && componentRef.current > 0) {
+      setTimeout(() => {
+        currentTarget.onerror = null;
+        currentTarget.src = img;
+        componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
+      }, RETRY_DELAY);
+    }
+  }, []);
+
+  const handleLoad = useCallback(() => {
+    setError(false);
+  }, []);
 
   // ** Function to extract initials from content
   const getInitials = str => {
@@ -73,6 +98,8 @@ const Avatar = forwardRef((props, ref) => {
           alt='avatarImg'
           height={imgHeight && !size ? imgHeight : 32}
           width={imgWidth && !size ? imgWidth : 32}
+          onError={handleError}
+          onLoad={handleLoad}
         />
       )}
       {status ? (
