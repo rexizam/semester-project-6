@@ -12,6 +12,9 @@ import * as GridConfig from '../../configs/gridConfig';
 import MovieCard from '../../components/movie-card/MovieCard';
 import placeholder from '../../assets/images/icons/profile-placeholder.png';
 
+const RETRY_COUNT = 5;
+const RETRY_DELAY = 1000;
+
 const PersonDetails = () => {
 
   const params = useParams();
@@ -20,9 +23,6 @@ const PersonDetails = () => {
 
   const dispatch = useDispatch();
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
-
-  const RETRY_COUNT = 5;
-  const RETRY_DELAY = 1000;
 
   const componentRef = useRef();
   const [imgError, setImgError] = useState(false);
@@ -45,7 +45,7 @@ const PersonDetails = () => {
     if (componentRef && componentRef.current && componentRef.current > 0) {
       setTimeout(() => {
         currentTarget.onerror = null;
-        currentTarget.src = image && `https://image.tmdb.org/t/p/original/${image}`;
+        currentTarget.src = `https://image.tmdb.org/t/p/original/${image}`;
         componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
       }, RETRY_DELAY);
     }

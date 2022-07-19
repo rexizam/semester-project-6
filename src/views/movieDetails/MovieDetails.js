@@ -14,6 +14,9 @@ import FavouritesButton from '../../components/movie-details/FavouritesButton';
 import StarRating from '../../components/star-rating/StarRating';
 import { getRatedMovies } from '../../redux/actions/movieRatings';
 
+const RETRY_COUNT = 5;
+const RETRY_DELAY = 1000;
+
 const MovieDetails = () => {
 
   const params = useParams();
@@ -23,9 +26,6 @@ const MovieDetails = () => {
   const dispatch = useDispatch();
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
   const ratedMoviesStore = useSelector(state => state.ratedMoviesReducer.ratedMovies);
-
-  const RETRY_COUNT = 5;
-  const RETRY_DELAY = 1000;
 
   const componentRef = useRef();
   const [imgError, setImgError] = useState(false);
@@ -57,7 +57,7 @@ const MovieDetails = () => {
     if (componentRef && componentRef.current && componentRef.current > 0) {
       setTimeout(() => {
         currentTarget.onerror = null;
-        currentTarget.src = image && `https://image.tmdb.org/t/p/original/${image}`;
+        currentTarget.src = `https://image.tmdb.org/t/p/original/${image}`;
         componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
       }, RETRY_DELAY);
     }

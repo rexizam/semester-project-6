@@ -12,10 +12,10 @@ import Rating from './Rating';
 import Heart from './Heart';
 import '../movie-card/movies.scss';
 
-const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
+const RETRY_COUNT = 5;
+const RETRY_DELAY = 1000;
 
-  const RETRY_COUNT = 5;
-  const RETRY_DELAY = 1000;
+const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
 
   const componentRef = useRef();
   const [imgError, setImgError] = useState(false);
