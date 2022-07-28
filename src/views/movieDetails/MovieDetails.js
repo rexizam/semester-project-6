@@ -122,7 +122,7 @@ const MovieDetails = () => {
               </Row>
               <Row className={'mb-2 mt-1'}>
                 <Col lg={6} md={6} sm={6} xs={6}>
-                  <MovieRating rating={score} />
+                  <MovieRating rating={score?.toFixed(1)} />
                 </Col>
                 {rating && (
                   <Col lg={6} md={6} sm={6} xs={6}>
