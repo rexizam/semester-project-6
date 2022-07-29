@@ -14,7 +14,7 @@ const Profiles = ({ data, profileType }) => {
           <div className={classnames('d-flex justify-content-start align-items-center', { 'mb-1': index !== data.length - 1 })}>
             <Avatar
               className='mr-1'
-              img={profile.profile_path ? `https://image.tmdb.org/t/p/w300/${profile.profile_path}` : placeholder}
+              img={profile.profile_path ? `https://image.tmdb.org/t/p/w185/${profile.profile_path}` : placeholder}
               imgHeight={70}
               imgWidth={70}
               imgClassName={'profileImg'}

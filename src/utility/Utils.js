@@ -59,3 +59,22 @@ export const selectThemeColors = theme => ({
 export const throwCommonError = (data) => {
   throw new Error(`${data.status_message} (error code: ${data.status_code})`);
 }
+
+export const fetchImage = async (url, attempts) => {
+  try {
+    return fetch(url)
+      .then(response => response.blob())
+      .then(image => {
+        // Create a local URL of that image
+        return URL.createObjectURL(image);
+      });
+  } catch (error) {
+    if (attempts === 0) throw error;
+    return fetchImage(url, attempts - 1)
+      .then(response => response.blob())
+      .then(image => {
+        // Create a local URL of that image
+        return URL.createObjectURL(image);
+      });
+  }
+};

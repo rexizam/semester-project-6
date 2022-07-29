@@ -50,9 +50,11 @@ const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
     setImgError(true);
     if (componentRef && componentRef.current && componentRef.current > 0) {
       setTimeout(() => {
-        currentTarget.onerror = null;
-        currentTarget.src = image && `https://image.tmdb.org/t/p/w300/${image}`;
-        componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
+        if (image !== undefined) {
+          currentTarget.onerror = null;
+          currentTarget.src = `https://image.tmdb.org/t/p/w300/${image}`;
+          componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
+        }
       }, RETRY_DELAY);
     }
   }, []);
@@ -63,7 +65,7 @@ const MovieCard = ({ movieData, isFavourite, updateFavourites }) => {
       <Link to={`/movieDetails/${id}`} className={'hiddenLink'} />
       {image && (
         <ProgressiveImage
-          delay={1000}
+          delay={500}
           src={`https://image.tmdb.org/t/p/w300/${image}`}
           placeholder={`https://image.tmdb.org/t/p/w45/${image}`}
           onError={handleError}

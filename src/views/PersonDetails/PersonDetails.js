@@ -1,7 +1,7 @@
 import { useHistory, useParams } from 'react-router-dom';
 import { api, base, responseConfigParameter } from '../../network/Constants';
 import { useFetch } from 'react-hooks-async';
-import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Badge, Button, Card, CardBody, CardHeader, CardText, CardTitle, Col, Row } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFavouriteMovieIds } from '../../redux/actions/favouriteMoviesIds';
@@ -11,9 +11,7 @@ import { Cell, Provider as GridProvider } from 'griding';
 import * as GridConfig from '../../configs/gridConfig';
 import MovieCard from '../../components/movie-card/MovieCard';
 import placeholder from '../../assets/images/icons/profile-placeholder.png';
-
-const RETRY_COUNT = 5;
-const RETRY_DELAY = 1000;
+import { fetchImage } from '../../utility/Utils';
 
 const PersonDetails = () => {
 
@@ -24,16 +22,13 @@ const PersonDetails = () => {
   const dispatch = useDispatch();
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
 
-  const componentRef = useRef();
-  const [imgError, setImgError] = useState(false);
-
+  const [imageData, setImageData] = useState();
   const name = result?.name;
   const placeOfBirth = result?.place_of_birth;
   const image = result?.profile_path;
   const biography = result?.biography;
   const birthday = result?.birthday;
   const actedOn = result?.credits?.cast;
-
   const history = useHistory();
 
   const handleClick = () => {
@@ -46,19 +41,11 @@ const PersonDetails = () => {
   }, [params.id])
 
   useEffect(() => {
-    componentRef.current = RETRY_COUNT;
-  }, []);
-
-  const handleError = useCallback(({ currentTarget }) => {
-    setImgError(true);
-    if (componentRef && componentRef.current && componentRef.current > 0) {
-      setTimeout(() => {
-        currentTarget.onerror = null;
-        currentTarget.src = `https://image.tmdb.org/t/p/original/${image}`;
-        componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
-      }, RETRY_DELAY);
+    if (image !== undefined) {
+      setImageData(`https://image.tmdb.org/t/p/w92/${image}`);
+      fetchImage(`https://image.tmdb.org/t/p/original/${image}`, 5).then(response => setImageData(response));
     }
-  }, []);
+  }, [image]);
 
   return (
     <Fragment>
@@ -104,9 +91,8 @@ const PersonDetails = () => {
           {image && (
             <ProgressiveImage
               delay={1000}
-              src={image && `https://image.tmdb.org/t/p/original/${image}`}
-              placeholder={image && `https://image.tmdb.org/t/p/w92/${image}`}
-              onError={handleError}
+              src={imageData && imageData}
+              placeholder={`https://image.tmdb.org/t/p/w92/${image}`}
             >
               {src => <img src={src} alt={''} className={'d-block mx-auto img-fluid w-100'} style={{ filter: pending ? 'blur(2rem)' : 'none' }} />}
             </ProgressiveImage>

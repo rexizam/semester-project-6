@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { api, base, responseConfigParameter } from '../../network/Constants';
 import { useFetch } from 'react-hooks-async';
 import Profiles from '../../components/movie-details/Profiles';
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import ProgressiveImage from 'react-progressive-graceful-image';
 import MovieRating from '../../components/movie-details/MovieRating';
 import { ArrowLeft, Film } from 'react-feather';
@@ -13,22 +13,18 @@ import { getFavouriteMovieIds } from '../../redux/actions/favouriteMoviesIds';
 import FavouritesButton from '../../components/movie-details/FavouritesButton';
 import StarRating from '../../components/star-rating/StarRating';
 import { getRatedMovies } from '../../redux/actions/movieRatings';
-
-const RETRY_COUNT = 5;
-const RETRY_DELAY = 1000;
+import { fetchImage } from '../../utility/Utils';
 
 const MovieDetails = () => {
 
   const params = useParams();
   const url = ([`${base}/movie/${params.id}`, `?api_key=${api}`, responseConfigParameter]).join('');
   const { pending, error, result, abort } = useFetch(url);
+  const [imageData, setImageData] = useState();
 
   const dispatch = useDispatch();
   const favouritesStore = useSelector(state => state.favouriteMovieIdsReducer.favouriteMovieIds);
   const ratedMoviesStore = useSelector(state => state.ratedMoviesReducer.ratedMovies);
-
-  const componentRef = useRef();
-  const [imgError, setImgError] = useState(false);
 
   const budget = result?.budget;
   const title = result?.title;
@@ -59,19 +55,11 @@ const MovieDetails = () => {
   }, [params.id])
 
   useEffect(() => {
-    componentRef.current = RETRY_COUNT;
-  }, []);
-
-  const handleError = useCallback(({ currentTarget }) => {
-    setImgError(true);
-    if (componentRef && componentRef.current && componentRef.current > 0) {
-      setTimeout(() => {
-        currentTarget.onerror = null;
-        currentTarget.src = `https://image.tmdb.org/t/p/original/${image}`;
-        componentRef.current = componentRef && componentRef.current && componentRef.current - 1;
-      }, RETRY_DELAY);
+    if (image !== undefined) {
+      setImageData(`https://image.tmdb.org/t/p/w92/${image}`);
+      fetchImage(`https://image.tmdb.org/t/p/original/${image}`, 5).then(response => setImageData(response));
     }
-  }, []);
+  }, [image]);
 
   const numberWithCommas = (x) => {
     //x.toLocaleString()
@@ -95,9 +83,8 @@ const MovieDetails = () => {
                   {image && (
                     <ProgressiveImage
                       delay={1000}
-                      src={image && `https://image.tmdb.org/t/p/original/${image}`}
-                      placeholder={image && `https://image.tmdb.org/t/p/w92/${image}`}
-                      onError={handleError}
+                      src={imageData && imageData}
+                      placeholder={`https://image.tmdb.org/t/p/w92/${image}`}
                     >
                       {src => <img src={src} alt={''} className={'d-block mx-auto img-fluid w-100'}
                                    style={{ filter: pending ? 'blur(2rem)' : 'none' }} />}
