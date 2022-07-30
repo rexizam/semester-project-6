@@ -61,14 +61,17 @@ export const throwCommonError = (data) => {
 }
 
 export const fetchImage = async (url, attempts) => {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
+  const options = {
+    method: 'GET',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
   };
 
   try {
-    return fetch(url, headers)
+    return fetch(url, options)
       .then(response => response.blob())
       .then(image => {
         // Create a local URL of that image
